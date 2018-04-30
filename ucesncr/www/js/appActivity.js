@@ -1,7 +1,7 @@
 
     // load the map
 
-    var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+    var mymap = L.map('mapid').fitWorld();
 
     // load the tiles
 
@@ -14,6 +14,8 @@
       id: 'mapbox.streets'
 	  
 	 }).addTo(mymap);
+	 
+	 mymap.locate({setView: true, maxZoom: 18});
 
 	// create a variable that will hold the XMLHttpRequest() - this must be done outside a function so that all the functions can use the same variable 
 	
@@ -83,6 +85,53 @@
 	// change the map zoom so that all the data is shown
 	mymap.fitBounds(earthquakelayer.getBounds());
 }
-//	document.addEventListener('DOMContentLoaded', function() {
-//	getEarthquakes();
-//}, false);
+
+
+//adapted from: https://www.w3schools.com/html/html5_geolocation.asp
+//adapted from: https://gis.stackexchange.com/questions/182068/getting-current-user-location-automatically-every-x-seconds-to-put-on-leaflet
+//Tracking location
+
+
+var initialTracking = true;
+var userLocation;
+var autoPan = false;
+
+function trackLocation() {
+	if (!initialTracking){
+	// zoom to center
+		mymap.fitBounds(userLocation.getLatLng().toBounds(250));
+		autoPan = true;
+		
+		
+	} else {
+		if (navigator.geolocation) {
+			alert("Finding your position!");
+			navigator.geolocation.watchPosition(showPosition);
+			
+			
+		//error handing	
+		} else {
+			alert("Geolocation is not supported by this browser.");
+		}
+	}
+}
+
+function showPosition(position) {
+
+	if(!initialTracking){
+		mymap.removeLayer(userLocation);
+	}
+	userLocation = L.marker([position.coords.latitude,position.coords.longitude], {icon:testMarkerPink}).addTo(mymap);
+						
+	
+	
+	if(initialTracking){
+		initialTracking = false;
+		mymap.fitBounds(userLocation.getLatLng().toBounds(250));
+		autoPan = true;
+	}else if (autoPan) {
+		mymap.panTo(userLocation.getLatLng());
+		
+	}	
+}
+
