@@ -38,8 +38,7 @@ function trackLocation() {
 		if (navigator.geolocation) {
 			alert("Finding your position!");
 			navigator.geolocation.watchPosition(showPosition);
-			
-			
+
 		//error handing	
 		} else {
 			alert("Geolocation is not supported by this browser.");
@@ -55,7 +54,6 @@ function showPosition(position) {
 	userLocation = L.marker([position.coords.latitude,position.coords.longitude], {icon:testMarkerPink}).addTo(mymap);
 						
 	
-	
 	if(initialTracking){
 		initialTracking = false;
 		mymap.fitBounds(userLocation.getLatLng().toBounds(250));
@@ -63,7 +61,18 @@ function showPosition(position) {
 	}else if (autoPan) {
 		mymap.panTo(userLocation.getLatLng());
 		
-	}	
+	}
+
+	checkQuestions(userLocation.getLatLng());	
+}
+
+
+
+function checkQuestions(userLocation){
+	
+	latlng = userLocation;
+	alert("Checking Location");
+	alert(latlng)
 }
 
 
