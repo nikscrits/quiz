@@ -27,6 +27,11 @@ var initialTracking = true;
 var userLocation;
 var autoPan = false;
 
+var testMarkerOrange = L.AwesomeMarkers.icon({
+	icon: 'play',
+	markerColor: 'orange'
+});
+
 function trackLocation() {
 	if (!initialTracking){
 	// zoom to center
@@ -38,8 +43,7 @@ function trackLocation() {
 		if (navigator.geolocation) {
 			alert("Finding your position!");
 			navigator.geolocation.watchPosition(showPosition);
-			
-			
+
 		//error handing	
 		} else {
 			alert("Geolocation is not supported by this browser.");
@@ -52,9 +56,8 @@ function showPosition(position) {
 	if(!initialTracking){
 		mymap.removeLayer(userLocation);
 	}
-	userLocation = L.marker([position.coords.latitude,position.coords.longitude], {icon:testMarkerPink}).addTo(mymap);
+	userLocation = L.marker([position.coords.latitude,position.coords.longitude], {icon:testMarkerOrange}).addTo(mymap);
 						
-	
 	
 	if(initialTracking){
 		initialTracking = false;
@@ -63,9 +66,10 @@ function showPosition(position) {
 	}else if (autoPan) {
 		mymap.panTo(userLocation.getLatLng());
 		
-	}	
-}
+	}
 
+	checkQuestions(userLocation.getLatLng());
+}
 
 
 	// create a variable that will hold the XMLHttpRequest() - this must be done outside a function so that all the functions can use the same variable 
@@ -75,6 +79,8 @@ function showPosition(position) {
 	// and a variable that will hold the layer itself – we need to do this outside the function so that we can use it to remove the layer later on
 	
 	var questionsLayer;
+
+	var json_group = new L.FeatureGroup();
 
 	// create the code to get the Earthquakes data using an XMLHttpRequest
 	function getQuestions() {
@@ -119,14 +125,52 @@ function showPosition(position) {
 	// look at the GeoJSON file - specifically at the properties - to see the earthquake magnitude and use a different marker depending on this value
 	// also include a pop-up that shows the place value of the earthquakes
 
-	return L.marker(latlng, {icon:testMarkerRed}).bindPopup("<b>"+feature.properties.point_name +"</b>");
+	layer_marker = L.marker(latlng, {icon:testMarkerRed}).bindPopup("<b>"+feature.properties.point_name +"</b>");
+
+	return layer_marker;
 
 },
 }).addTo(mymap);
 	
 	// change the map zoom so that all the data is shown
 	mymap.fitBounds(questionsLayer.getBounds());
+
+
+	json_group.addLayer(layer_marker);
+
+
 }
+
+
+function checkQuestions(userLocation){
+	
+	latlng = userLocation;
+	alert("Checking Location");
+	alert(latlng);
+
+	// Loop through each point in JSON file
+        json_group.eachLayer(function (layer) {
+ 
+            // Lat, long of current point
+            layer_lat_long = layer.getLatLng();
+ 
+            // Distance from our circle marker
+            // To current point in meters
+            distance_from_current_loc = layer_lat_long.distanceTo(latlng);
+
+            alert(distance_from_current_loc);
+ 
+            // See if meters is within raduis
+            // The user has selected
+            if (distance_from_current_loc <= 20) {
+                alert("within 20m")
+            }
+        });
+}
+
+
+
+
 
 
 
