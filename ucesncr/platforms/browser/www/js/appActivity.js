@@ -67,8 +67,6 @@ function showPosition(position) {
 		mymap.panTo(userLocation.getLatLng());
 		
 	}
-
-	checkQuestions(userLocation.getLatLng());
 }
 
 
@@ -79,8 +77,6 @@ function showPosition(position) {
 	// and a variable that will hold the layer itself – we need to do this outside the function so that we can use it to remove the layer later on
 	
 	var questionsLayer;
-
-	var json_group = new L.FeatureGroup();
 
 	// create the code to get the Earthquakes data using an XMLHttpRequest
 	function getQuestions() {
@@ -97,7 +93,8 @@ function showPosition(position) {
 });
 
 	// create the code to wait for the response from the data server, and process the response once it is received
-	
+	coords = [];
+
 	function questionResponse() {
 	
 	// this function listens out for the server to say that the data is ready - i.e. has state 4
@@ -114,6 +111,7 @@ function showPosition(position) {
 	function loadQuestionLayer(questionData) {
 	
 	// convert the text to JSON
+	// questionJSON is an array
 	var questionJSON = JSON.parse(questionData);
 	
 	// load the geoJSON layer
@@ -127,6 +125,8 @@ function showPosition(position) {
 
 	layer_marker = L.marker(latlng, {icon:testMarkerRed}).bindPopup("<b>"+feature.properties.point_name +"</b>");
 
+	coords.push(latlng);
+
 	return layer_marker;
 
 },
@@ -135,42 +135,45 @@ function showPosition(position) {
 	// change the map zoom so that all the data is shown
 	mymap.fitBounds(questionsLayer.getBounds());
 
-
-	json_group.addLayer(layer_marker);
-
-
+	alert("length" + coords.length);
+	checkQuestions(coords, userLocation);
 }
 
 
-function checkQuestions(userLocation){
+
+function checkQuestions(latlngs, userLocation){
 	
-	latlng = userLocation;
+	latlng = userLocation.getLatLng();
 	alert("Checking Location");
 	alert(latlng);
 
+
+	// alert("Length2 " + json_group.features.length);
+
 	// Loop through each point in JSON file
-        json_group.eachLayer(function (layer) {
+        // JSONS.eachLayer(function (layer) {
  
-            // Lat, long of current point
-            layer_lat_long = layer.getLatLng();
+        //     // Lat, long of current point
+        //     layer_lat_long = layer.getLatLng();
  
-            // Distance from our circle marker
-            // To current point in meters
-            distance_from_current_loc = layer_lat_long.distanceTo(latlng);
+        //     // Distance from our circle marker
+        //     // To current point in meters
+        //     distance_from_current_loc = layer_lat_long.distanceTo(latlng);
 
-            alert(distance_from_current_loc);
+        //     alert("distance from: " + distance_from_current_loc);
  
-            // See if meters is within raduis
-            // The user has selected
-            if (distance_from_current_loc <= 20) {
-                alert("within 20m")
-            }
-        });
+        //     // See if meters is within raduis
+        //     // The user has selected
+        //     if (distance_from_current_loc <= 20) {
+        //         alert("within 20m")
+        //     }
+        // });
+
+	// for(var i=0; i<JSONS.features.length; i++) {
+	//     current_point = JSONS.features[i];
+	//     layer_lat_long = current_point.getLatLng();
+	//     alert("current q point: " + layer_lat_long);
+	// }
+
 }
-
-
-
-
-
-
 
