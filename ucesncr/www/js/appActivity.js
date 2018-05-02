@@ -175,7 +175,7 @@ function checkQuestions(questionlatlngs){
 	    alert("current q point " + i + ": " + current_point);
 	    alert(current_point.latitude);
 	    alert(current_point.longitude);
-	    var distance = getDistanceFromLatLonInM(current_point.latitude, current_point.longitude, latlng.latitude, latlng.longitude);
+	    var distance = getDistanceFromLatLonInM(current_point.lat, current_point.lng, latlng.lat, latlng.lng);
 	    alert(distance);
 	}
 }
