@@ -164,7 +164,7 @@ function checkQuestions(markersArray){
 	    if (distance <= 20) {
             markersArray[i].setIcon(testMarkerGreen);
         } else {
-        	markersArray[i].set(testMarkerRed);
+        	markersArray[i].setIcon(testMarkerRed);
         }
 	}
 }
