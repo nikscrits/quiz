@@ -199,7 +199,12 @@ function deg2rad(deg) {
 
 
 function onClick(e) {
-	alert(this.feature.properties.question);
+
+	if (this.icon.markerColor == 'green'){
+		alert("is green");
+	}
+
+	//alert(this.feature.properties.question);
 }
 
 
