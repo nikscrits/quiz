@@ -172,16 +172,14 @@ function checkQuestions(questionlatlngs){
 
 	for(var i=1; i<questionlatlngs.length; i++) {
 	    current_point = questionlatlngs[i];
-	    alert("current q point: " + current_point);
-	    distance = getDistanceFromLatLonInKm(current_point.latitude, current_point.longitude, latlng.latitude, latlng.longitude);
+	    alert("current q point " + i + ": " + current_point);
+	    distance = getDistanceFromLatLonInM(current_point.latitude, current_point.longitude, latlng.latitude, latlng.longitude);
 	    alert(distance);
 	}
 }
 
 
-
-
-function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+function getDistanceFromLatLonInM(lat1,lon1,lat2,lon2) {
   var R = 6371; // Radius of the earth in km
   var dLat = deg2rad(lat2-lat1);  // deg2rad below
   var dLon = deg2rad(lon2-lon1); 
@@ -192,7 +190,8 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
     ; 
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
   var d = R * c; // Distance in km
-  return d;
+  var d2 = d * 1000;
+  return d2;
 }
 
 function deg2rad(deg) {
