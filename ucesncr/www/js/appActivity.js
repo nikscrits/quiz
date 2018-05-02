@@ -136,7 +136,7 @@ function showPosition(position) {
 	// change the map zoom so that all the data is shown
 	mymap.fitBounds(questionsLayer.getBounds());
 
-	alert("length" + coords.length);
+	alert("length" + coords.length); //7
 	checkQuestions(coords);
 }
 
@@ -145,8 +145,8 @@ function showPosition(position) {
 function checkQuestions(questionlatlngs){
 	
 	latlng = userLocation.getLatLng();
-	alert("Checking Location");
-	alert(latlng);
+	alert("Checking Location"); //works
+	alert(latlng); //works
 
 
 	// alert("Length2 " + json_group.features.length);
@@ -170,14 +170,17 @@ function checkQuestions(questionlatlngs){
         //     }
         // });
 
-	for(var i=1; i<questionlatlngs.length; i++) {
+	for(var i=0; i<questionlatlngs.length; i++) {
 	    current_point = questionlatlngs[i];
 	    alert("current q point " + i + ": " + current_point);
+	    alert(current_point.latitude);
+	    alert(current_point.longitude);
 	    distance = getDistanceFromLatLonInM(current_point.latitude, current_point.longitude, latlng.latitude, latlng.longitude);
 	    alert(distance);
 	}
 }
 
+//1, 2, 3, 4, 5, 6, 
 
 function getDistanceFromLatLonInM(lat1,lon1,lat2,lon2) {
   var R = 6371; // Radius of the earth in km
