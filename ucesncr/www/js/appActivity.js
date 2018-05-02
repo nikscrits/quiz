@@ -170,7 +170,7 @@ function checkQuestions(questionlatlngs){
         //     }
         // });
 
-	for(var i=0; i<questionlatlngs.length; i++) {
+	for(var i=1; i<questionlatlngs.length; i++) {
 	    current_point = questionlatlngs[i];
 	    alert("current q point: " + current_point);
 	    distance = getDistanceFromLatLonInKm(current_point.latitude, current_point.longitude, latlng.latitude, latlng.longitude);
