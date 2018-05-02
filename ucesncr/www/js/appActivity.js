@@ -27,6 +27,11 @@ var initialTracking = true;
 var userLocation;
 var autoPan = false;
 
+var testMarkerOrange = L.AwesomeMarkers.icon({
+	icon: 'play',
+	markerColor: 'orange'
+});
+
 function trackLocation() {
 	if (!initialTracking){
 	// zoom to center
@@ -51,7 +56,7 @@ function showPosition(position) {
 	if(!initialTracking){
 		mymap.removeLayer(userLocation);
 	}
-	userLocation = L.marker([position.coords.latitude,position.coords.longitude], {icon:testMarkerPink}).addTo(mymap);
+	userLocation = L.marker([position.coords.latitude,position.coords.longitude], {icon:testMarkerOrange}).addTo(mymap);
 						
 	
 	if(initialTracking){
