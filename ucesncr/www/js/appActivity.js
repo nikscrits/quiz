@@ -142,7 +142,7 @@ function showPosition(position) {
 
 
 
-function checkQuestions(latlngs){
+function checkQuestions(questionlatlngs){
 	
 	latlng = userLocation.getLatLng();
 	alert("Checking Location");
@@ -170,11 +170,9 @@ function checkQuestions(latlngs){
         //     }
         // });
 
-	// for(var i=0; i<JSONS.features.length; i++) {
-	//     current_point = JSONS.features[i];
-	//     layer_lat_long = current_point.getLatLng();
-	//     alert("current q point: " + layer_lat_long);
-	// }
-
+	for(var i=0; i<questionlatlngs.length; i++) {
+	    current_point = questionlatlngs[i];
+	    alert("current q point: " + current_point);
+	}
 }
 
