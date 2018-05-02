@@ -95,6 +95,8 @@ function showPosition(position) {
 
 	// create the code to wait for the response from the data server, and process the response once it is received
 	coords = [];
+	markers = [];
+
 
 	function questionResponse() {
 	
@@ -127,6 +129,7 @@ function showPosition(position) {
 	layer_marker = L.marker(latlng, {icon:testMarkerRed}).bindPopup("<b>"+feature.properties.point_name +"</b>");
 
 	coords.push(latlng);
+	markers.push(layer_marker);
 
 	return layer_marker;
 
@@ -136,13 +139,54 @@ function showPosition(position) {
 	// change the map zoom so that all the data is shown
 	mymap.fitBounds(questionsLayer.getBounds());
 
-	alert("length" + coords.length); //7
-	checkQuestions(coords);
+	//alert("length" + coords.length); //7
+	//checkQuestions(coords);
+
+	alert("length " + markers.length);
+	checkQuestions(markers);
 }
 
 
 
-function checkQuestions(questionlatlngs){
+// function checkQuestions(questionlatlngs){
+	
+// 	latlng = userLocation.getLatLng();
+// 	alert("Checking Location"); //works
+// 	alert(latlng); //works
+
+
+// 	// alert("Length2 " + json_group.features.length);
+
+// 	// Loop through each point in JSON file
+//         // JSONS.eachLayer(function (layer) {
+ 
+//         //     // Lat, long of current point
+//         //     layer_lat_long = layer.getLatLng();
+ 
+//         //     // Distance from our circle marker
+//         //     // To current point in meters
+//         //     distance_from_current_loc = layer_lat_long.distanceTo(latlng);
+
+//         //     alert("distance from: " + distance_from_current_loc);
+ 
+//         //     // See if meters is within raduis
+//         //     // The user has selected
+//         //     if (distance_from_current_loc <= 20) {
+//         //         alert("within 20m")
+//         //     }
+//         // });
+
+// 	for(var i=0; i<questionlatlngs.length; i++) {
+// 	    current_point = questionlatlngs[i];
+// 	    alert("current q point " + i + ": " + current_point);
+// 	    var distance = getDistanceFromLatLonInM(current_point.lat, current_point.lng, latlng.lat, latlng.lng);
+// 	    alert(distance);
+// 	}
+// }
+
+
+
+function checkQuestions(markersArray){
 	
 	latlng = userLocation.getLatLng();
 	alert("Checking Location"); //works
@@ -170,18 +214,19 @@ function checkQuestions(questionlatlngs){
         //     }
         // });
 
-	for(var i=0; i<questionlatlngs.length; i++) {
-	    current_point = questionlatlngs[i];
-	    alert("current q point " + i + ": " + current_point);
-	    alert(current_point.latitude);
-	    alert(current_point.longitude);
-	    var distance = getDistanceFromLatLonInM(current_point.lat, current_point.lng, latlng.lat, latlng.lng);
+	for(var i=0; i<markersArray.length; i++) {
+	    current_point = markersArray[i];
+	    currentpoint_latlng = current_point.getLatLng();
+	    alert("current q point " + i + ": " + currentpoint_latlng);
+	    var distance = getDistanceFromLatLonInM(currentpoint_latlng.lat, currentpoint_latlng.lng, latlng.lat, latlng.lng);
 	    alert(distance);
 	}
 }
 
-//1, 2, 3, 4, 5, 6, 
 
+
+//Code from:
+//https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
 function getDistanceFromLatLonInM(lat1,lon1,lat2,lon2) {
   var R = 6371; // Radius of the earth in km
   var dLat = deg2rad(lat2-lat1);  // deg2rad below
