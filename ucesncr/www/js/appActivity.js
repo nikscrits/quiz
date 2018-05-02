@@ -200,7 +200,7 @@ function deg2rad(deg) {
 
 function onClick(e) {
 
-	if (this.icon.markerColor == 'green'){
+	if (this.icon == "testMarkerGreen"){
 		alert("is green");
 	}
 
