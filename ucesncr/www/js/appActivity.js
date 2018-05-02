@@ -129,8 +129,10 @@ function showPosition(position) {
 {
 	// look at the GeoJSON file - specifically at the properties - to see the earthquake magnitude and use a different marker depending on this value
 	// also include a pop-up that shows the place value of the earthquakes
+	layer_marker = L.marker(latlng, {icon:testMarkerRed});
 
-	layer_marker = L.marker(latlng, {icon:testMarkerRed}).bindPopup("<b>"+feature.properties.point_name +"</b>");
+
+	//layer_marker = L.marker(latlng, {icon:testMarkerRed}).bindPopup("<b>"+feature.properties.point_name +"</b>");
 
 	markers.push(layer_marker);
 
