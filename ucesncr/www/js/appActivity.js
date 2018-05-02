@@ -67,16 +67,18 @@ function showPosition(position) {
 		mymap.panTo(userLocation.getLatLng());
 		
 	}
+
+	checkQuestions(userLocation.getLatLng());
 }
 
 
 
-// function checkQuestions(userLocation){
+function checkQuestions(userLocation){
 	
-// 	latlng = userLocation;
-// 	alert("Checking Location");
-// 	alert(latlng)
-// }
+	latlng = userLocation;
+	alert("Checking Location");
+	alert(latlng)
+}
 
 
 
