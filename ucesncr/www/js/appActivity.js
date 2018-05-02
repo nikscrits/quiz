@@ -152,20 +152,19 @@ function questionsToAnswer(){
 function checkQuestions(markersArray){
 	
 	latlng = userLocation.getLatLng();
-	alert("Checking Location"); //works
+	alert("Checking for nearby questions"); //works
 	alert(latlng); //works
 
 	for(var i=0; i<markersArray.length; i++) {
 	    current_point = markersArray[i];
 	    currentpoint_latlng = current_point.getLatLng();
-	    alert("current q point " + i + ": " + currentpoint_latlng);
 
 	    var distance = getDistanceFromLatLonInM(currentpoint_latlng.lat, currentpoint_latlng.lng, latlng.lat, latlng.lng);
-	    alert(distance);
 
 	    if (distance <= 20) {
-            alert("within 20m")
             markersArray[i].setIcon(testMarkerGreen);
+        } else {
+        	markersArray[i].set(testMarkerRed);
         }
 	}
 }
