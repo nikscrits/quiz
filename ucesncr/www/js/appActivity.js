@@ -32,6 +32,11 @@ var testMarkerOrange = L.AwesomeMarkers.icon({
 	markerColor: 'orange'
 });
 
+var testMarkerGreen = L.AwesomeMarkers.icon({
+	icon: 'play',
+	markerColor: 'green'
+});
+
 function trackLocation() {
 	if (!initialTracking){
 	// zoom to center
@@ -218,8 +223,15 @@ function checkQuestions(markersArray){
 	    current_point = markersArray[i];
 	    currentpoint_latlng = current_point.getLatLng();
 	    alert("current q point " + i + ": " + currentpoint_latlng);
+
 	    var distance = getDistanceFromLatLonInM(currentpoint_latlng.lat, currentpoint_latlng.lng, latlng.lat, latlng.lng);
 	    alert(distance);
+
+	    if (distance <= 20) {
+            alert("within 20m")
+            markersArray[i].setIcon(testMarkerGreen);
+        }
+
 	}
 }
 
