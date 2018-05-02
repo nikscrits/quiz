@@ -164,6 +164,7 @@ function checkQuestions(markersArray){
 	    if (distance <= 20) {
             markersArray[i].setIcon(testMarkerGreen);
             alert(markersArray[i].feature.properties.question);
+
         } else {
         	markersArray[i].setIcon(testMarkerRed);
         }
@@ -190,3 +191,17 @@ function getDistanceFromLatLonInM(lat1,lon1,lat2,lon2) {
 function deg2rad(deg) {
   return deg * (Math.PI/180)
 }
+
+
+
+function onClick(e) {
+	alert(this.feature.properties.question);
+}
+
+
+
+
+
+
+
+
