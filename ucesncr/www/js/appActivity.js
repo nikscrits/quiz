@@ -27,6 +27,16 @@ var initialTracking = true;
 var userLocation;
 var autoPan = false;
 
+var testMarkerOrange = L.AwesomeMarkers.icon({
+	icon: 'play',
+	markerColor: 'orange'
+});
+
+var testMarkerGreen = L.AwesomeMarkers.icon({
+	icon: 'play',
+	markerColor: 'green'
+});
+
 function trackLocation() {
 	if (!initialTracking){
 	// zoom to center
@@ -38,8 +48,7 @@ function trackLocation() {
 		if (navigator.geolocation) {
 			alert("Finding your position!");
 			navigator.geolocation.watchPosition(showPosition);
-			
-			
+
 		//error handing	
 		} else {
 			alert("Geolocation is not supported by this browser.");
@@ -52,9 +61,9 @@ function showPosition(position) {
 	if(!initialTracking){
 		mymap.removeLayer(userLocation);
 	}
-	userLocation = L.marker([position.coords.latitude,position.coords.longitude], {icon:testMarkerPink}).addTo(mymap);
+
+	userLocation = L.marker([position.coords.latitude,position.coords.longitude], {icon:testMarkerOrange}).addTo(mymap);
 						
-	
 	
 	if(initialTracking){
 		initialTracking = false;
@@ -63,9 +72,8 @@ function showPosition(position) {
 	}else if (autoPan) {
 		mymap.panTo(userLocation.getLatLng());
 		
-	}	
+	}
 }
-
 
 
 	// create a variable that will hold the XMLHttpRequest() - this must be done outside a function so that all the functions can use the same variable 
@@ -91,7 +99,9 @@ function showPosition(position) {
 });
 
 	// create the code to wait for the response from the data server, and process the response once it is received
-	
+	markers = [];
+
+
 	function questionResponse() {
 	
 	// this function listens out for the server to say that the data is ready - i.e. has state 4
@@ -108,6 +118,7 @@ function showPosition(position) {
 	function loadQuestionLayer(questionData) {
 	
 	// convert the text to JSON
+	// questionJSON is an array
 	var questionJSON = JSON.parse(questionData);
 	
 	// load the geoJSON layer
@@ -119,14 +130,63 @@ function showPosition(position) {
 	// look at the GeoJSON file - specifically at the properties - to see the earthquake magnitude and use a different marker depending on this value
 	// also include a pop-up that shows the place value of the earthquakes
 
-	return L.marker(latlng, {icon:testMarkerRed}).bindPopup("<b>"+feature.properties.point_name +"</b>");
+	layer_marker = L.marker(latlng, {icon:testMarkerRed}).bindPopup("<b>"+feature.properties.point_name +"</b>");
+
+	markers.push(layer_marker);
+
+	return layer_marker;
 
 },
 }).addTo(mymap);
 	
 	// change the map zoom so that all the data is shown
 	mymap.fitBounds(questionsLayer.getBounds());
+
 }
 
 
+function questionsToAnswer(){
+	checkQuestions(markers);
+}
 
+function checkQuestions(markersArray){
+	
+	latlng = userLocation.getLatLng();
+	alert("Checking for nearby questions"); //works
+	alert(latlng); //works
+
+	for(var i=0; i<markersArray.length; i++) {
+	    current_point = markersArray[i];
+	    currentpoint_latlng = current_point.getLatLng();
+
+	    var distance = getDistanceFromLatLonInM(currentpoint_latlng.lat, currentpoint_latlng.lng, latlng.lat, latlng.lng);
+
+	    if (distance <= 20) {
+            markersArray[i].setIcon(testMarkerGreen);
+            alert(markersArray[i].feature.properties.question);
+        } else {
+        	markersArray[i].setIcon(testMarkerRed);
+        }
+	}
+}
+
+//Code from:
+//https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+function getDistanceFromLatLonInM(lat1,lon1,lat2,lon2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+  var dLon = deg2rad(lon2-lon1); 
+  var a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2)
+    ; 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var d = R * c; // Distance in km
+  var d2 = d * 1000;
+  return d2;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI/180)
+}
