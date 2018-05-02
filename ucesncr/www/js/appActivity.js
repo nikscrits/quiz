@@ -78,6 +78,11 @@ function checkQuestions(userLocation){
 	latlng = userLocation;
 	alert("Checking Location");
 	alert(latlng)
+	currentLat = userLocation.lat();
+	currentLng = userLocation.lng();
+	alert(currentLat);
+	alert(currentLng);
+
 }
 
 
