@@ -114,6 +114,7 @@ function showPosition(position) {
 	function loadQuestionLayer(questionData) {
 	
 	// convert the text to JSON
+	// questionJSON is an array
 	var questionJSON = JSON.parse(questionData);
 	
 	// load the geoJSON layer
@@ -137,7 +138,7 @@ function showPosition(position) {
 
 
 	json_group.addLayer(layer_marker);
-
+	alert("Length " + json_group.features.length);
 
 }
 
@@ -147,6 +148,9 @@ function checkQuestions(userLocation){
 	latlng = userLocation;
 	alert("Checking Location");
 	alert(latlng);
+
+
+	alert("Length2 " + json_group.features.length);
 
 	// Loop through each point in JSON file
         json_group.eachLayer(function (layer) {
@@ -158,7 +162,7 @@ function checkQuestions(userLocation){
             // To current point in meters
             distance_from_current_loc = layer_lat_long.distanceTo(latlng);
 
-            alert(distance_from_current_loc);
+            alert("distance from: " + distance_from_current_loc);
  
             // See if meters is within raduis
             // The user has selected
