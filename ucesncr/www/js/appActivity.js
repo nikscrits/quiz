@@ -163,7 +163,7 @@ function checkQuestions(markersArray){
 
 	    if (distance <= 20) {
             markersArray[i].setIcon(testMarkerGreen);
-            alert(markersArray[i].properties.question);
+            alert(markersArray[i].feature.properties.question);
         } else {
         	markersArray[i].setIcon(testMarkerRed);
         }
