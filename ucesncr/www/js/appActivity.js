@@ -27,19 +27,26 @@ var initialTracking = true;
 var userLocation;
 var autoPan = false;
 
-var testMarkerOrange = L.AwesomeMarkers.icon({
+// create custom markers
+
+var markerOrange = L.AwesomeMarkers.icon({
 	icon: 'play',
 	markerColor: 'orange'
 });
 
-var testMarkerGreen = L.AwesomeMarkers.icon({
+var markerGreen = L.AwesomeMarkers.icon({
 	icon: 'play',
 	markerColor: 'green'
 });
 
-var testMarkerPurple = L.AwesomeMarkers.icon({
+var markerPurple = L.AwesomeMarkers.icon({
 	icon: 'play',
 	markerColor: 'purple'
+});
+
+var markerRed = L.AwesomeMarkers.icon({
+	icon: 'play',
+	markerColor: 'red'
 });
 
 function trackLocation() {
@@ -67,7 +74,7 @@ function showPosition(position) {
 		mymap.removeLayer(userLocation);
 	}
 
-	userLocation = L.marker([position.coords.latitude,position.coords.longitude], {icon:testMarkerOrange}).addTo(mymap);
+	userLocation = L.marker([position.coords.latitude,position.coords.longitude], {icon:markerOrange}).addTo(mymap);
 						
 	
 	if(initialTracking){
@@ -96,12 +103,6 @@ function showPosition(position) {
 	client2.onreadystatechange = questionResponse; // note don't use earthquakeResponse() with brackets as that doesn't work
 	client2.send();
 }
-
-	// create custom red marker
-	var testMarkerRed = L.AwesomeMarkers.icon({
-	icon: 'play',
-	markerColor: 'red'
-});
 
 	// create the code to wait for the response from the data server, and process the response once it is received
 	markers = [];
@@ -134,9 +135,9 @@ function showPosition(position) {
 {
 	// look at the GeoJSON file - specifically at the properties - to see the earthquake magnitude and use a different marker depending on this value
 	// also include a pop-up that shows the place value of the earthquakes
-	layer_marker = L.marker(latlng, {icon:testMarkerRed});
+	layer_marker = L.marker(latlng, {icon:markerRed});
 
-	//layer_marker = L.marker(latlng, {icon:testMarkerRed}).bindPopup("<b>"+feature.properties.point_name +"</b>");
+	//layer_marker = L.marker(latlng, {icon:markerRed}).bindPopup("<b>"+feature.properties.point_name +"</b>");
 
 	markers.push(layer_marker);
 
@@ -167,9 +168,9 @@ function checkQuestions(markersArray){
 	    var distance = getDistanceFromLatLonInM(currentpoint_latlng.lat, currentpoint_latlng.lng, latlng.lat, latlng.lng);
 
 	    if (distance <= 20) {
-            markersArray[i].setIcon(testMarkerGreen);
+            markersArray[i].setIcon(markerGreen);
         } else {
-        	markersArray[i].setIcon(testMarkerRed);
+        	markersArray[i].setIcon(markerRed);
         }
 
         markersArray[i].on('click', onClick);
@@ -219,6 +220,12 @@ function showClickedQuestion(clickedQuestion){
 	document.getElementById("answer2").value = clickedQuestion.feature.properties.answer2;
 	document.getElementById("answer3").value = clickedQuestion.feature.properties.answer3;
 	document.getElementById("answer4").value = clickedQuestion.feature.properties.answer4;
+
+	document.getElementById("check1").checked = false;
+	document.getElementById("check2").checked = false;
+	document.getElementById("check3").checked = false;
+	document.getElementById("check3").checked = false;
+
 }
 
 
@@ -320,8 +327,10 @@ function dataUploaded() {
 
     document.getElementById('questionsection').style.display = 'none';
 	document.getElementById('mapid').style.display = 'block';
-	clickedQuestion.setIcon(testMarkerPurple);
-	
+	clickedQuestion.setIcon(markerPurple);
+
+	//could have marker different colour is right or wrong answer given
+
     }
 }
 
