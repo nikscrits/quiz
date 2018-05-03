@@ -3,9 +3,6 @@
 
     var mymap = L.map('mapid').fitWorld();
 
-    var questionsection = document.getElementById("questionsection");
-    questionsection.style.display = "none";
-
     // load the tiles
 
     L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw", {
@@ -19,6 +16,10 @@
 	 }).addTo(mymap);
 	 
 	 mymap.locate({setView: true, maxZoom: 18});
+
+
+	var questionsection = document.getElementById("questionsection");
+    questionsection.style.display = "none";
 
 
 //adapted from: https://www.w3schools.com/html/html5_geolocation.asp
