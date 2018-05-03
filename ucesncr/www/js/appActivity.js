@@ -37,6 +37,11 @@ var testMarkerGreen = L.AwesomeMarkers.icon({
 	markerColor: 'green'
 });
 
+var testMarkerPurple = L.AwesomeMarkers.icon({
+	icon: 'play',
+	markerColor: 'purple'
+});
+
 function trackLocation() {
 	if (!initialTracking){
 	// zoom to center
@@ -315,21 +320,10 @@ function dataUploaded() {
 
     document.getElementById('questionsection').style.display = 'none';
 	document.getElementById('mapid').style.display = 'block';
-
+	clickedQuestion.setIcon(testMarkerPurple);
+	
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
