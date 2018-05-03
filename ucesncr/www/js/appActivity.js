@@ -274,8 +274,8 @@ function submitAnswer(answer, answerValue){
 		correctAnswerValue = clickedQuestion.feature.properties.answer4;
 	}
 
-	if (answer == clickedQuestion) {
-		alert("That is the correct answer: " + answerValue + "\nWell done!");
+	if (answer == correctAnswer) {
+		alert("That is the correct answer: " + correctAnswer + "\nWell done!");
 	} else {
 		alert("That is the wrong answer.\n The correct answer is: " + correctAnswer + " - " + correctAnswerValue);
 	}
