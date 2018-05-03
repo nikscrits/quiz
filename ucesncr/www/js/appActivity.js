@@ -219,6 +219,50 @@ function showClickedQuestion(clickedQuestion){
 }
 
 
+function validateAnswer(){
+
+// now get the radio button values
+	if ( (document.getElementById("check1").checked == false) &&
+		(document.getElementById("check2").checked == false) &&
+		(document.getElementById("check3").checked == false) &&
+		(document.getElementById("check4").checked == false)) {
+		alert("Please select an answer");
+	} else {
+
+	var givenAnswer;
+
+	if (document.getElementById("check1").checked) {
+        givenAnswer = 1;
+    }
+    if (document.getElementById("check2").checked) {
+    	givenAnswer = 2;
+    }
+	if (document.getElementById("check3").checked) {
+		givenAnswer = 3;
+	}
+	if (document.getElementById("check4").checked) {
+		givenAnswer = 4;
+	}
+
+		submitAnswer(givenAnswer);
+	}
+
+}
+
+function submitAnswer(answer){
+	alert("Submitting answer: " + answer);
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

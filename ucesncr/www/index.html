@@ -95,7 +95,7 @@ crossorigin=""></script>
 
 
     <div id="questionsection" style ="display:none">
-        <h1 id = "header">Answer the question!</h1>
+        <h2 id = "header">Answer the question!</h1>
 
         <textarea id = "question" style="border: none; width:100%" readonly></textarea>
 
@@ -111,7 +111,8 @@ crossorigin=""></script>
         <textarea id = "answer4" style="border: none" readonly></textarea>
         <input type="radio" name="answer" id = check4 value="4"/><br />
 
-        <button id="submitButton">Submit Answer</button></div>
+        <button class="mdl-button mdl-button--raised mdl-button--colored" id="submitAnswer" onclick="validateAnswer()">Submit Answer</button>
+
     </div>
 
 		<!-- try removing the width and height from the above div code.. the 100% height and width be classified by the css (black writing) at the top of the document..
