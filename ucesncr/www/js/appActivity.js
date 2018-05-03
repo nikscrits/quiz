@@ -296,7 +296,6 @@ function submitAnswer(answer, answer_value, answer_correct){
 }
 
 
-
 var client;
 
 function processData(postString) {
@@ -313,9 +312,12 @@ function dataUploaded() {
   if (client.readyState == 4) {
     // change the DIV to show the response
     alert(client.responseText);
+
+    document.getElementById('questionsection').style.display = 'none';
+	document.getElementById('mapid').style.display = 'block';
+
     }
 }
-
 
 
 
