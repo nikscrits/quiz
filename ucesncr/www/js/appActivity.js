@@ -334,7 +334,7 @@ function dataUploaded() {
 	document.getElementById('mapid').style.display = 'block';
 	
 
-	if (answer_correct == true) {
+	if (answer_correct) {
 		clickedQuestion.setIcon(markerYellow);
 	} else {
 		clickedQuestion.setIcon(markerPurple);
