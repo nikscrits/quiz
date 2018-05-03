@@ -3,6 +3,9 @@
 
     var mymap = L.map('mapid').fitWorld();
 
+    var questionsection = document.getElementById("questionsection");
+    questionsection.style.display = "none";
+
     // load the tiles
 
     L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw", {
@@ -206,12 +209,13 @@ function onClick(e) {
 }
 
 
-var  xhr;  // define the global variable to process the AJAX request 
+var  xhr;  // define the global variable to process the AJAX request
 
 function callDivChange(currentQuestion) {   
 	xhr = new XMLHttpRequest();
-	//var filename = document.getElementById("questionpage.html").value;
-	xhr.open("GET", "questionpage.html", true);
+
+	var section = document.getElementById("questionsection").value;
+	xhr.open("GET", section, true);
 
 	xhr.onreadystatechange = processDivChange(currentQuestion);   
 	try {      
@@ -225,18 +229,17 @@ function callDivChange(currentQuestion) {
 	
 function processDivChange(currentQuestion) { 
 if (xhr.readyState < 4)       // while waiting response from server         
-	document.getElementById('mapid').innerHTML = "Loading..."; 
+	//document.getElementById('mapid').innerHTML = "Loading..."; 
+	var mapsection = document.getElementById("mapid");
+	mapsection.style.display = "none";
+
+	document.getElementById("question").innerHTML = currentQuestion.feature.properties.question;
 	 
 	    else if (xhr.readyState === 4) {       // 4 = Response from server has been completely loaded.      
 		if (xhr.status == 200 && xhr.status < 300)     
 			// http status between 200 to 299 are all successful             
 		document.getElementById('mapid').innerHTML = xhr.responseText;
-
-		document.getElementById('question').innerHTML = currentQuestion.feature.properties.question;
 		} 
 } 
-
-
-
 
 
