@@ -250,12 +250,12 @@ function validateAnswer(){
 		answerValue = clickedQuestion.feature.properties.answer4;
 	}
 
-		submitAnswer(givenAnswer, answerValue);
+		answerResponse(givenAnswer, answerValue);
 	}
 
 }
 
-function submitAnswer(answer, answerValue){
+function answerResponse(answer, answerValue){
 
 	var correctAnswer = clickedQuestion.feature.properties.correct_answer;
 	var correctAnswerValue;
@@ -274,21 +274,48 @@ function submitAnswer(answer, answerValue){
 		correctAnswerValue = clickedQuestion.feature.properties.answer4;
 	}
 
+	var answer_correct;
 	if (answer == correctAnswer) {
 		alert("That is the correct answer: " + correctAnswer + "\nWell done!");
+		answer_correct = true;
+		submitAnswer(answer, answerValue, answer_correct);
 	} else {
 		alert("That is the wrong answer.\n The correct answer is: " + correctAnswer + " - " + correctAnswerValue);
+		answer_correct = false;
+		submitAnswer(answer, answerValue, answer_correct);
 	}
+}
+
+function submitAnswer(answer, answerValue, answer_correct){
+
+	var question_id = clickedQuestion.feature.properties.question_id;
+	var question = clickedQuestion.feature.properties.question;
+
+	var postString = "question_id="+question_id +"&question="+question +"&answer="+answer +"&answer_value="+answer_value+"&answer_correct="+answer_correct;
+
+	processData(postString);
 }
 
 
 
+var client;
 
+function processData(postString) {
+   client = new XMLHttpRequest();
+   client.open('POST','http://developer.cege.ucl.ac.uk:30288/uploadAnswerData',true);
+   client.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+   client.onreadystatechange = dataUploaded;  
+   client.send(postString);
+}
 
-
-
-
-
+// create the code to wait for the response from the data server, and process the response once it is received
+function dataUploaded() {
+  // this function listens out for the server to say that the data is ready - i.e. has state 4
+  if (client.readyState == 4) {
+    // change the DIV to show the response
+    alert(client.responseText);
+    }
+}
 
 
 
