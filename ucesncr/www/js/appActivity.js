@@ -49,6 +49,11 @@ var markerRed = L.AwesomeMarkers.icon({
 	markerColor: 'red'
 });
 
+var markerYellow = L.AwesomeMarkers.icon({
+	icon: 'play',
+	markerColor: 'yellow'
+});
+
 function trackLocation() {
 	if (!initialTracking){
 	// zoom to center
@@ -267,6 +272,7 @@ function validateAnswer(){
 
 }
 
+var answer_correct;
 function answerResponse(answer, answerValue){
 
 	var correctAnswer = clickedQuestion.feature.properties.correct_answer;
@@ -286,7 +292,6 @@ function answerResponse(answer, answerValue){
 		correctAnswerValue = clickedQuestion.feature.properties.answer4;
 	}
 
-	var answer_correct;
 	if (answer == correctAnswer) {
 		alert("That is the correct answer: " + correctAnswer + "\nWell done!");
 		answer_correct = true;
@@ -327,9 +332,13 @@ function dataUploaded() {
 
     document.getElementById('questionsection').style.display = 'none';
 	document.getElementById('mapid').style.display = 'block';
-	clickedQuestion.setIcon(markerPurple);
+	
 
-	//could have marker different colour is right or wrong answer given
+	if (answer_correct == true) {
+		clickedQuestion.setIcon(markerYellow);
+	} else {
+		clickedQuestion.setIcon(markerPurple);
+	}
 
     }
 }
