@@ -27,14 +27,31 @@ var initialTracking = true;
 var userLocation;
 var autoPan = false;
 
-var testMarkerOrange = L.AwesomeMarkers.icon({
+// create custom markers
+
+var markerOrange = L.AwesomeMarkers.icon({
 	icon: 'play',
 	markerColor: 'orange'
 });
 
-var testMarkerGreen = L.AwesomeMarkers.icon({
+var markerGreen = L.AwesomeMarkers.icon({
 	icon: 'play',
 	markerColor: 'green'
+});
+
+var markerPurple = L.AwesomeMarkers.icon({
+	icon: 'play',
+	markerColor: 'purple'
+});
+
+var markerRed = L.AwesomeMarkers.icon({
+	icon: 'play',
+	markerColor: 'red'
+});
+
+var markerBlue = L.AwesomeMarkers.icon({
+	icon: 'play',
+	markerColor: 'cadetblue'
 });
 
 function trackLocation() {
@@ -62,7 +79,7 @@ function showPosition(position) {
 		mymap.removeLayer(userLocation);
 	}
 
-	userLocation = L.marker([position.coords.latitude,position.coords.longitude], {icon:testMarkerOrange}).addTo(mymap);
+	userLocation = L.marker([position.coords.latitude,position.coords.longitude], {icon:markerOrange}).addTo(mymap);
 						
 	
 	if(initialTracking){
@@ -91,12 +108,6 @@ function showPosition(position) {
 	client2.onreadystatechange = questionResponse; // note don't use earthquakeResponse() with brackets as that doesn't work
 	client2.send();
 }
-
-	// create custom red marker
-	var testMarkerRed = L.AwesomeMarkers.icon({
-	icon: 'play',
-	markerColor: 'red'
-});
 
 	// create the code to wait for the response from the data server, and process the response once it is received
 	markers = [];
@@ -129,9 +140,9 @@ function showPosition(position) {
 {
 	// look at the GeoJSON file - specifically at the properties - to see the earthquake magnitude and use a different marker depending on this value
 	// also include a pop-up that shows the place value of the earthquakes
-	layer_marker = L.marker(latlng, {icon:testMarkerRed});
+	layer_marker = L.marker(latlng, {icon:markerBlue});
 
-	//layer_marker = L.marker(latlng, {icon:testMarkerRed}).bindPopup("<b>"+feature.properties.point_name +"</b>");
+	//layer_marker = L.marker(latlng, {icon:markerRed}).bindPopup("<b>"+feature.properties.point_name +"</b>");
 
 	markers.push(layer_marker);
 
@@ -154,7 +165,6 @@ function checkQuestions(markersArray){
 	
 	latlng = userLocation.getLatLng();
 	alert("Checking for nearby questions"); //works
-	alert(latlng); //works
 
 	for(var i=0; i<markersArray.length; i++) {
 	    current_point = markersArray[i];
@@ -163,11 +173,9 @@ function checkQuestions(markersArray){
 	    var distance = getDistanceFromLatLonInM(currentpoint_latlng.lat, currentpoint_latlng.lng, latlng.lat, latlng.lng);
 
 	    if (distance <= 20) {
-            markersArray[i].setIcon(testMarkerGreen);
-            alert(markersArray[i].feature.properties.question);
-
+            markersArray[i].setIcon(markerPurple);
         } else {
-        	markersArray[i].setIcon(testMarkerRed);
+        	markersArray[i].setIcon(markerBlue);
         }
 
         markersArray[i].on('click', onClick);
@@ -196,43 +204,144 @@ function deg2rad(deg) {
   return deg * (Math.PI/180)
 }
 
+//this.feature.properties.question
 
+var clickedQuestion;
 
 function onClick(e) {
 
-	alert(this.feature.properties.question);
-
-	callDivChange(this);
+	showClickedQuestion(this);
+	clickedQuestion = this;
 }
 
 
-var  xhr;  // define the global variable to process the AJAX request 
+function showClickedQuestion(clickedQuestion){
 
-function callDivChange(currentQuestion) {   
-	xhr = new XMLHttpRequest();
-	//var filename = document.getElementById("questionpage.html").value;
-	xhr.open("GET", "questionpage.html", true);
+	document.getElementById('questionsection').style.display = 'block';
+	document.getElementById('mapid').style.display = 'none';
 
-	xhr.onreadystatechange = processDivChange(currentQuestion);   
-	try {      
-		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");   
-	}   
-	catch (e) {   
-		// this only works in internet explorer   
-	}   
-	xhr.send(); 
-	}   
+	document.getElementById("question").value = clickedQuestion.feature.properties.question;
+	document.getElementById("answer1").value = clickedQuestion.feature.properties.answer1;
+	document.getElementById("answer2").value = clickedQuestion.feature.properties.answer2;
+	document.getElementById("answer3").value = clickedQuestion.feature.properties.answer3;
+	document.getElementById("answer4").value = clickedQuestion.feature.properties.answer4;
+
+	document.getElementById("check1").checked = false;
+	document.getElementById("check2").checked = false;
+	document.getElementById("check3").checked = false;
+	document.getElementById("check3").checked = false;
+
+}
+
+
+function validateAnswer(){
+
+// now get the radio button values
+	if ( (document.getElementById("check1").checked == false) &&
+		(document.getElementById("check2").checked == false) &&
+		(document.getElementById("check3").checked == false) &&
+		(document.getElementById("check4").checked == false)) {
+		
+		alert("Please select an answer");
+
+	} else {
+
+	var givenAnswer;
+	var answerValue;
+
+	if (document.getElementById("check1").checked) {
+        givenAnswer = 1;
+        answerValue = clickedQuestion.feature.properties.answer1;
+    }
+    if (document.getElementById("check2").checked) {
+    	givenAnswer = 2;
+    	answerValue = clickedQuestion.feature.properties.answer2;
+    }
+	if (document.getElementById("check3").checked) {
+		givenAnswer = 3;
+		answerValue = clickedQuestion.feature.properties.answer3;
+
+	}
+	if (document.getElementById("check4").checked) {
+		givenAnswer = 4;
+		answerValue = clickedQuestion.feature.properties.answer4;
+	}
+
+		answerResponse(givenAnswer, answerValue);
+	}
+
+}
+
+var answer_correct;
+function answerResponse(answer, answerValue){
+
+	var correctAnswer = clickedQuestion.feature.properties.correct_answer;
+	var correctAnswerValue;
+
+	if (correctAnswer == 1) {
+        correctAnswerValue = clickedQuestion.feature.properties.answer1;
+    }
+    if (correctAnswer == 2) {
+    	correctAnswerValue = clickedQuestion.feature.properties.answer2;
+    }
+	if (correctAnswer == 3) {
+		correctAnswerValue = clickedQuestion.feature.properties.answer3;
+
+	}
+	if (correctAnswer == 4) {
+		correctAnswerValue = clickedQuestion.feature.properties.answer4;
+	}
+
+	if (answer == correctAnswer) {
+		alert("That is the correct answer: " + correctAnswer + "\nWell done!");
+		answer_correct = true;
+		submitAnswer(answer, answerValue, answer_correct);
+	} else {
+		alert("That is the wrong answer.\n The correct answer is: " + correctAnswer + " - " + correctAnswerValue);
+		answer_correct = false;
+		submitAnswer(answer, answerValue, answer_correct);
+	}
+}
+
+function submitAnswer(answer, answer_value, answer_correct){
+
+	var question = clickedQuestion.feature.properties.question;
+
+	var postString = "&question="+question +"&answer="+answer +"&answer_value="+answer_value+"&answer_correct="+answer_correct;
+
+	processData(postString);
+}
+
+
+var client;
+
+function processData(postString) {
+   client = new XMLHttpRequest();
+   client.open('POST','http://developer.cege.ucl.ac.uk:30288/uploadAnswerData',true);
+   client.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+   client.onreadystatechange = dataUploaded;  
+   client.send(postString);
+}
+
+// create the code to wait for the response from the data server, and process the response once it is received
+function dataUploaded() {
+  // this function listens out for the server to say that the data is ready - i.e. has state 4
+  if (client.readyState == 4) {
+    // change the DIV to show the response
+    alert(client.responseText);
+
+    document.getElementById('questionsection').style.display = 'none';
+	document.getElementById('mapid').style.display = 'block';
 	
-function processDivChange(currentQuestion) { 
-if (xhr.readyState < 4)       // while waiting response from server         
-	document.getElementById('mapid').innerHTML = "Loading..."; 
-	 
-	    else if (xhr.readyState === 4) {       // 4 = Response from server has been completely loaded.      
-		if (xhr.status == 200 && xhr.status < 300)     
-			// http status between 200 to 299 are all successful             
-		document.getElementById('mapid').innerHTML = xhr.responseText;
-		} 
-} 
+
+	if (answer_correct) {
+		clickedQuestion.setIcon(markerGreen);
+	} else {
+		clickedQuestion.setIcon(markerRed);
+	}
+
+    }
+}
 
 
 

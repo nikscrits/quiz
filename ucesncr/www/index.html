@@ -94,11 +94,26 @@ crossorigin=""></script>
 		<div id="mapid" style="width: 100%; height: 100%;"></div> 
 
 
-<!--     <div id="questionsection" style ="display:none">
-        <h1 id = "question">This will be the question</h1>
-        <textarea id = "answer1"></textarea>
-        <button id="submitButton">Submit Answer</button></div>
-    </div> -->
+    <div id="questionsection" style ="display:none">
+        <h2 id = "header">Answer the question!</h1>
+
+        <textarea id = "question" style="border: none; width:100%" readonly></textarea>
+
+        <textarea id = "answer1" style="border: none" readonly></textarea>
+        <input type="radio" name="answer" id = check1 value="1"/><br />
+
+        <textarea id = "answer2" style="border: none" readonly></textarea>
+        <input type="radio" name="answer" id = check2 value="2"/><br />
+
+        <textarea id = "answer3" style="border: none" readonly></textarea>
+        <input type="radio" name="answer" id = check3 value="3"/><br />
+
+        <textarea id = "answer4" style="border: none" readonly></textarea>
+        <input type="radio" name="answer" id = check4 value="4"/><br />
+
+        <button class="mdl-button mdl-button--raised mdl-button--colored" id="submitAnswer" onclick="validateAnswer()">Submit Answer</button>
+
+    </div>
 
 		<!-- try removing the width and height from the above div code.. the 100% height and width be classified by the css (black writing) at the top of the document..
 			see this url for more detail: http://www.d3noob.org/2014/02/make-your-leafletjs-map-full-screen.html -->
