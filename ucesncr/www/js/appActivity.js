@@ -286,7 +286,7 @@ function answerResponse(answer, answerValue){
 	}
 }
 
-function submitAnswer(answer, answerValue, answer_correct){
+function submitAnswer(answer, answer_value, answer_correct){
 
 	var question_id = clickedQuestion.feature.properties.question_id;
 	var question = clickedQuestion.feature.properties.question;
