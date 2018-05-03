@@ -288,11 +288,9 @@ function answerResponse(answer, answerValue){
 
 function submitAnswer(answer, answer_value, answer_correct){
 
-	alert(clickedQuestion.feature.properties);
-	var question_id = clickedQuestion.feature.properties.question_id;
 	var question = clickedQuestion.feature.properties.question;
 
-	var postString = "question_id="+question_id +"&question="+question +"&answer="+answer +"&answer_value="+answer_value+"&answer_correct="+answer_correct;
+	var postString = "&question="+question +"&answer="+answer +"&answer_value="+answer_value+"&answer_correct="+answer_correct;
 
 	processData(postString);
 }
