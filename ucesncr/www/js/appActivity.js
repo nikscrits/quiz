@@ -159,7 +159,6 @@ function questionsToAnswer(){
 	checkQuestions(markers);
 }
 
-
 function checkQuestions(markersArray){
 	
 	latlng = userLocation.getLatLng();
@@ -203,30 +202,14 @@ function deg2rad(deg) {
   return deg * (Math.PI/180)
 }
 
+//this.feature.properties.question
 
 var clickedQuestion;
 
 function onClick(e) {
-	var withinDistance;
 
+	showClickedQuestion(this);
 	clickedQuestion = this;
-
-	var icon = clickedQuestion.options.iconColor;
-	alert(icon);
-
-	if (icon == "purple"){
-	 	showClickedQuestion(this);
-	 	//clickedQuestion = this;
-	} else {
-		alert("You can only answer questions within 20m.")
-	}
-
-	// if (withinDistance) {
-	// 	showClickedQuestion(this);
-	// 	clickedQuestion = this;
-	// } else {
-	// 	alert("You can only answer questions within 20m.")
-	// }
 
 }
 
