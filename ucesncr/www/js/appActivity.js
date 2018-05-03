@@ -211,6 +211,7 @@ function onClick(e) {
 	clickedQuestion = this;
 
 	var icon = clickedQuestion.icon;
+	alert(icon);
 
 	if (icon == markerPurple){
 	 	showClickedQuestion(this);
