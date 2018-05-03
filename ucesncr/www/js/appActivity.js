@@ -161,6 +161,8 @@ function questionsToAnswer(){
 	checkQuestions(markers);
 }
 
+var withinDistance;
+
 function checkQuestions(markersArray){
 	
 	latlng = userLocation.getLatLng();
@@ -174,8 +176,10 @@ function checkQuestions(markersArray){
 
 	    if (distance <= 20) {
             markersArray[i].setIcon(markerPurple);
+            withinDistance = true;
         } else {
         	markersArray[i].setIcon(markerBlue);
+        	withinDistance = false;
         }
 
         markersArray[i].on('click', onClick);
@@ -209,9 +213,14 @@ function deg2rad(deg) {
 var clickedQuestion;
 
 function onClick(e) {
+	
+	if (withinDistance) {
+		showClickedQuestion(this);
+		clickedQuestion = this;
+	} else {
+		alert("You can only answer questions within 20m.")
+	}
 
-	showClickedQuestion(this);
-	clickedQuestion = this;
 }
 
 
