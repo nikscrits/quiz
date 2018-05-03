@@ -103,7 +103,7 @@ function showPosition(position) {
 
 
 	function questionResponse() {
-	
+
 	// this function listens out for the server to say that the data is ready - i.e. has state 4
 	
 	if (client2.readyState == 4) {
@@ -129,8 +129,9 @@ function showPosition(position) {
 {
 	// look at the GeoJSON file - specifically at the properties - to see the earthquake magnitude and use a different marker depending on this value
 	// also include a pop-up that shows the place value of the earthquakes
+	layer_marker = L.marker(latlng, {icon:testMarkerRed});
 
-	layer_marker = L.marker(latlng, {icon:testMarkerRed}).bindPopup("<b>"+feature.properties.point_name +"</b>");
+	//layer_marker = L.marker(latlng, {icon:testMarkerRed}).bindPopup("<b>"+feature.properties.point_name +"</b>");
 
 	markers.push(layer_marker);
 
@@ -164,9 +165,13 @@ function checkQuestions(markersArray){
 	    if (distance <= 20) {
             markersArray[i].setIcon(testMarkerGreen);
             alert(markersArray[i].feature.properties.question);
+
         } else {
         	markersArray[i].setIcon(testMarkerRed);
         }
+
+        markersArray[i].on('click', onClick);
+
 	}
 }
 
@@ -190,3 +195,46 @@ function getDistanceFromLatLonInM(lat1,lon1,lat2,lon2) {
 function deg2rad(deg) {
   return deg * (Math.PI/180)
 }
+
+
+
+function onClick(e) {
+
+	alert(this.feature.properties.question);
+
+	callDivChange(this);
+}
+
+
+var  xhr;  // define the global variable to process the AJAX request 
+
+function callDivChange(currentQuestion) {   
+	xhr = new XMLHttpRequest();
+	//var filename = document.getElementById("questionpage.html").value;
+	xhr.open("GET", "questionpage.html", true);
+
+	xhr.onreadystatechange = processDivChange(currentQuestion);   
+	try {      
+		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");   
+	}   
+	catch (e) {   
+		// this only works in internet explorer   
+	}   
+	xhr.send(); 
+	}   
+	
+function processDivChange(currentQuestion) { 
+if (xhr.readyState < 4)       // while waiting response from server         
+	document.getElementById('mapid').innerHTML = "Loading..."; 
+	 
+	    else if (xhr.readyState === 4) {       // 4 = Response from server has been completely loaded.      
+		if (xhr.status == 200 && xhr.status < 300)     
+			// http status between 200 to 299 are all successful             
+		document.getElementById('mapid').innerHTML = xhr.responseText;
+		} 
+} 
+
+
+
+
+
