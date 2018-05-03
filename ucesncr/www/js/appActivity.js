@@ -142,8 +142,6 @@ function showPosition(position) {
 	// also include a pop-up that shows the place value of the earthquakes
 	layer_marker = L.marker(latlng, {icon:markerBlue});
 
-	//layer_marker = L.marker(latlng, {icon:markerRed}).bindPopup("<b>"+feature.properties.point_name +"</b>");
-
 	markers.push(layer_marker);
 
 	return layer_marker;
@@ -161,8 +159,6 @@ function questionsToAnswer(){
 	checkQuestions(markers);
 }
 
-var withinDistance;
-
 function checkQuestions(markersArray){
 	
 	latlng = userLocation.getLatLng();
@@ -176,10 +172,8 @@ function checkQuestions(markersArray){
 
 	    if (distance <= 20) {
             markersArray[i].setIcon(markerPurple);
-            withinDistance = true;
         } else {
         	markersArray[i].setIcon(markerBlue);
-        	withinDistance = false;
         }
 
         markersArray[i].on('click', onClick);
@@ -208,18 +202,29 @@ function deg2rad(deg) {
   return deg * (Math.PI/180)
 }
 
-//this.feature.properties.question
 
 var clickedQuestion;
 
 function onClick(e) {
-	
-	if (withinDistance) {
-		showClickedQuestion(this);
-		clickedQuestion = this;
+	var withinDistance;
+
+	clickedQuestion = this;
+
+	var icon = clickedQuestion.icon;
+
+	if (icon == markerPurple){
+	 	showClickedQuestion(this);
+	 	clickedQuestion = this;
 	} else {
 		alert("You can only answer questions within 20m.")
 	}
+
+	// if (withinDistance) {
+	// 	showClickedQuestion(this);
+	// 	clickedQuestion = this;
+	// } else {
+	// 	alert("You can only answer questions within 20m.")
+	// }
 
 }
 
