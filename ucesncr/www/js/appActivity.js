@@ -154,7 +154,6 @@ function checkQuestions(markersArray){
 	
 	latlng = userLocation.getLatLng();
 	alert("Checking for nearby questions"); //works
-	alert(latlng); //works
 
 	for(var i=0; i<markersArray.length; i++) {
 	    current_point = markersArray[i];
@@ -164,8 +163,6 @@ function checkQuestions(markersArray){
 
 	    if (distance <= 20) {
             markersArray[i].setIcon(testMarkerGreen);
-            alert(markersArray[i].feature.properties.question);
-
         } else {
         	markersArray[i].setIcon(testMarkerRed);
         }
@@ -198,11 +195,12 @@ function deg2rad(deg) {
 
 //this.feature.properties.question
 
+var clickedQuestion;
+
 function onClick(e) {
 
-	alert(this.feature.properties.question);
-
 	showClickedQuestion(this);
+	clickedQuestion = this;
 }
 
 
@@ -226,7 +224,9 @@ function validateAnswer(){
 		(document.getElementById("check2").checked == false) &&
 		(document.getElementById("check3").checked == false) &&
 		(document.getElementById("check4").checked == false)) {
+		
 		alert("Please select an answer");
+
 	} else {
 
 	var givenAnswer;
@@ -251,6 +251,7 @@ function validateAnswer(){
 
 function submitAnswer(answer){
 	alert("Submitting answer: " + answer);
+	alert("Correct answer is: " + clickedQuestion.feature.properties.correct_answer);
 }
 
 
