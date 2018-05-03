@@ -211,12 +211,12 @@ function onClick(e) {
 
 	clickedQuestion = this;
 
-	var icon = clickedQuestion.icon.markerColor;
+	var icon = clickedQuestion.feature.icon.markerColor;
 	alert(icon);
 
 	if (icon == purple){
 	 	showClickedQuestion(this);
-	 	clickedQuestion = this;
+	 	//clickedQuestion = this;
 	} else {
 		alert("You can only answer questions within 20m.")
 	}
