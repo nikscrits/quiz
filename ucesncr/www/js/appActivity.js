@@ -159,6 +159,7 @@ function questionsToAnswer(){
 	checkQuestions(markers);
 }
 
+
 function checkQuestions(markersArray){
 	
 	latlng = userLocation.getLatLng();
@@ -210,10 +211,10 @@ function onClick(e) {
 
 	clickedQuestion = this;
 
-	var icon = clickedQuestion.icon;
+	var icon = clickedQuestion.icon.markerColor;
 	alert(icon);
 
-	if (icon == markerPurple){
+	if (icon == purple){
 	 	showClickedQuestion(this);
 	 	clickedQuestion = this;
 	} else {
