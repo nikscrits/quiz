@@ -18,10 +18,6 @@
 	 mymap.locate({setView: true, maxZoom: 18});
 
 
-	var questionsection = document.getElementById("questionsection");
-    questionsection.style.display = "none";
-
-
 //adapted from: https://www.w3schools.com/html/html5_geolocation.asp
 //adapted from: https://gis.stackexchange.com/questions/182068/getting-current-user-location-automatically-every-x-seconds-to-put-on-leaflet
 //Tracking location
@@ -107,7 +103,7 @@ function showPosition(position) {
 
 
 	function questionResponse() {
-	
+
 	// this function listens out for the server to say that the data is ready - i.e. has state 4
 	
 	if (client2.readyState == 4) {
@@ -210,13 +206,12 @@ function onClick(e) {
 }
 
 
-var  xhr;  // define the global variable to process the AJAX request
+var  xhr;  // define the global variable to process the AJAX request 
 
 function callDivChange(currentQuestion) {   
 	xhr = new XMLHttpRequest();
-
-	var section = document.getElementById("questionsection").value;
-	xhr.open("GET", section, true);
+	//var filename = document.getElementById("questionpage.html").value;
+	xhr.open("GET", "questionpage.html", true);
 
 	xhr.onreadystatechange = processDivChange(currentQuestion);   
 	try {      
@@ -230,11 +225,7 @@ function callDivChange(currentQuestion) {
 	
 function processDivChange(currentQuestion) { 
 if (xhr.readyState < 4)       // while waiting response from server         
-	//document.getElementById('mapid').innerHTML = "Loading..."; 
-	var mapsection = document.getElementById("mapid");
-	mapsection.style.display = "none";
-
-	document.getElementById("question").innerHTML = currentQuestion.feature.properties.question;
+	document.getElementById('mapid').innerHTML = "Loading..."; 
 	 
 	    else if (xhr.readyState === 4) {       // 4 = Response from server has been completely loaded.      
 		if (xhr.status == 200 && xhr.status < 300)     
@@ -242,5 +233,8 @@ if (xhr.readyState < 4)       // while waiting response from server
 		document.getElementById('mapid').innerHTML = xhr.responseText;
 		} 
 } 
+
+
+
 
 
