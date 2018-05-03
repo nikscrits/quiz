@@ -213,7 +213,7 @@ function callDivChange(currentQuestion) {
 	//var filename = document.getElementById("questionpage.html").value;
 	xhr.open("GET", "questionpage.html", true);
 
-	xhr.onreadystatechange = processDivChange;   
+	xhr.onreadystatechange = processDivChange(currentQuestion);   
 	try {      
 		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");   
 	}   
@@ -223,7 +223,7 @@ function callDivChange(currentQuestion) {
 	xhr.send(); 
 	}   
 	
-function processDivChange() { 
+function processDivChange(currentQuestion) { 
 if (xhr.readyState < 4)       // while waiting response from server         
 	document.getElementById('mapid').innerHTML = "Loading..."; 
 	 
@@ -231,6 +231,7 @@ if (xhr.readyState < 4)       // while waiting response from server
 		if (xhr.status == 200 && xhr.status < 300)     
 			// http status between 200 to 299 are all successful             
 		document.getElementById('mapid').innerHTML = xhr.responseText;
+
 		document.getElementById('question').innerHTML = currentQuestion.feature.properties.question;
 		} 
 } 
