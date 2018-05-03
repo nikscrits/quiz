@@ -213,6 +213,9 @@ function showClickedQuestion(clickedQuestion){
 
 	document.getElementById("question").value = clickedQuestion.feature.properties.question;
 	document.getElementById("answer1").value = clickedQuestion.feature.properties.answer1;
+	document.getElementById("answer2").value = clickedQuestion.feature.properties.answer2;
+	document.getElementById("answer3").value = clickedQuestion.feature.properties.answer3;
+	document.getElementById("answer4").value = clickedQuestion.feature.properties.answer4;
 }
 
 
