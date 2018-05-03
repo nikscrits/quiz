@@ -49,9 +49,9 @@ var markerRed = L.AwesomeMarkers.icon({
 	markerColor: 'red'
 });
 
-var markerYellow = L.AwesomeMarkers.icon({
+var markerBlue = L.AwesomeMarkers.icon({
 	icon: 'play',
-	markerColor: 'yellow'
+	markerColor: 'cadetblue'
 });
 
 function trackLocation() {
@@ -140,7 +140,7 @@ function showPosition(position) {
 {
 	// look at the GeoJSON file - specifically at the properties - to see the earthquake magnitude and use a different marker depending on this value
 	// also include a pop-up that shows the place value of the earthquakes
-	layer_marker = L.marker(latlng, {icon:markerRed});
+	layer_marker = L.marker(latlng, {icon:markerBlue});
 
 	//layer_marker = L.marker(latlng, {icon:markerRed}).bindPopup("<b>"+feature.properties.point_name +"</b>");
 
@@ -173,9 +173,9 @@ function checkQuestions(markersArray){
 	    var distance = getDistanceFromLatLonInM(currentpoint_latlng.lat, currentpoint_latlng.lng, latlng.lat, latlng.lng);
 
 	    if (distance <= 20) {
-            markersArray[i].setIcon(markerGreen);
+            markersArray[i].setIcon(markerPurple);
         } else {
-        	markersArray[i].setIcon(markerRed);
+        	markersArray[i].setIcon(markerBlue);
         }
 
         markersArray[i].on('click', onClick);
@@ -335,9 +335,9 @@ function dataUploaded() {
 	
 
 	if (answer_correct) {
-		clickedQuestion.setIcon(markerYellow);
+		clickedQuestion.setIcon(markerGreen);
 	} else {
-		clickedQuestion.setIcon(markerPurple);
+		clickedQuestion.setIcon(markerRed);
 	}
 
     }
