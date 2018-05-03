@@ -211,7 +211,7 @@ function onClick(e) {
 
 	clickedQuestion = this;
 
-	var icon = clickedQuestion.feature.icon.markerColor;
+	var icon = clickedQuestion.options.markerColor;
 	alert(icon);
 
 	if (icon == purple){
