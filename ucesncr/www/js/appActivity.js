@@ -230,28 +230,55 @@ function validateAnswer(){
 	} else {
 
 	var givenAnswer;
+	var answerValue;
 
 	if (document.getElementById("check1").checked) {
         givenAnswer = 1;
+        answerValue = clickedQuestion.feature.properties.answer1;
     }
     if (document.getElementById("check2").checked) {
     	givenAnswer = 2;
+    	answerValue = clickedQuestion.feature.properties.answer2;
     }
 	if (document.getElementById("check3").checked) {
 		givenAnswer = 3;
+		answerValue = clickedQuestion.feature.properties.answer3;
+
 	}
 	if (document.getElementById("check4").checked) {
 		givenAnswer = 4;
+		answerValue = clickedQuestion.feature.properties.answer4;
 	}
 
-		submitAnswer(givenAnswer);
+		submitAnswer(givenAnswer, answerValue);
 	}
 
 }
 
-function submitAnswer(answer){
-	alert("Submitting answer: " + answer);
-	alert("Correct answer is: " + clickedQuestion.feature.properties.correct_answer);
+function submitAnswer(answer, answerValue){
+
+	var correctAnswer = clickedQuestion.feature.properties.correct_answer;
+	var correctAnswerValue;
+
+	if (correctAnswer == 1) {
+        correctAnswerValue = clickedQuestion.feature.properties.answer1;
+    }
+    if (correctAnswer == 2) {
+    	correctAnswerValue = clickedQuestion.feature.properties.answer2;
+    }
+	if (correctAnswer == 3) {
+		correctAnswerValue = clickedQuestion.feature.properties.answer3;
+
+	}
+	if (correctAnswer == 4) {
+		correctAnswerValue = clickedQuestion.feature.properties.answer4;
+	}
+
+	if (answer == clickedQuestion) {
+		alert("That is the correct answer: " + answerValue + "\nWell done!");
+	} else {
+		alert("That is the wrong answer.\n The correct answer is: " + correctAnswer + " - " + correctAnswerValue);
+	}
 }
 
 
