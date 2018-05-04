@@ -213,3 +213,12 @@ _:-ms-input-placeholder, :root .demo-graph {
       -ms-flex-align: center;
           align-items: center;
 }
+
+#question { 
+    border: none; 
+    width:100%;
+    font-family: 'Roboto', 'Helvetica', sans-serif;
+    font-weight: bold;
+}
+
+

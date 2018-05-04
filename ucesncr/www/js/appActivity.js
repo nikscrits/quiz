@@ -142,8 +142,6 @@ function showPosition(position) {
 	// also include a pop-up that shows the place value of the earthquakes
 	layer_marker = L.marker(latlng, {icon:markerBlue});
 
-	//layer_marker = L.marker(latlng, {icon:markerRed}).bindPopup("<b>"+feature.properties.point_name +"</b>");
-
 	markers.push(layer_marker);
 
 	return layer_marker;
@@ -155,7 +153,6 @@ function showPosition(position) {
 	mymap.fitBounds(questionsLayer.getBounds());
 
 }
-
 
 function questionsToAnswer(){
 	checkQuestions(markers);
@@ -174,12 +171,13 @@ function checkQuestions(markersArray){
 
 	    if (distance <= 20) {
             markersArray[i].setIcon(markerPurple);
+			
+			markersArray[i].on('click', onClick);
+
         } else {
         	markersArray[i].setIcon(markerBlue);
+        	markersArray[i].bindPopup("<b>Can't Answer!</b><br>This question is too far away.");
         }
-
-        markersArray[i].on('click', onClick);
-
 	}
 }
 
@@ -204,7 +202,6 @@ function deg2rad(deg) {
   return deg * (Math.PI/180)
 }
 
-//this.feature.properties.question
 
 var clickedQuestion;
 
@@ -212,8 +209,8 @@ function onClick(e) {
 
 	showClickedQuestion(this);
 	clickedQuestion = this;
-}
 
+}
 
 function showClickedQuestion(clickedQuestion){
 
@@ -232,7 +229,6 @@ function showClickedQuestion(clickedQuestion){
 	document.getElementById("check3").checked = false;
 
 }
-
 
 function validateAnswer(){
 
