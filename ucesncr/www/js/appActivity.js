@@ -172,11 +172,15 @@ function checkQuestions(markersArray){
 
 	    if (distance <= 20) {
             markersArray[i].setIcon(markerPurple);
+			
+			markersArray[i].on('click', onClick);
+
         } else {
         	markersArray[i].setIcon(markerBlue);
+        	markersArray[i].bindPopup("This marker is too far away");
         }
 
-        markersArray[i].on('click', onClick);
+        
 
 	}
 }
