@@ -1,78 +1,72 @@
+//Load the map
+var mymap = L.map('mapid').fitWorld();
 
-    // load the map
+//Load the tiles
+L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw", {
+	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+	maxZoom: 18,
+	id: 'mapbox.streets'}).addTo(mymap);
 
-    var mymap = L.map('mapid').fitWorld();
+mymap.locate({setView: true, maxZoom: 18});
 
-    // load the tiles
+//Create the custom marker styles
 
-    L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw", {
-
-      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-
-      maxZoom: 18,
-
-      id: 'mapbox.streets'
-	  
-	 }).addTo(mymap);
-	 
-	 mymap.locate({setView: true, maxZoom: 18});
-
-
-//adapted from: https://www.w3schools.com/html/html5_geolocation.asp
-//adapted from: https://gis.stackexchange.com/questions/182068/getting-current-user-location-automatically-every-x-seconds-to-put-on-leaflet
-//Tracking location
-
-
-var initialTracking = true;
-var userLocation;
-var autoPan = false;
-
-// create custom markers
-
+//Will represent the user's lcoation
 var markerOrange = L.AwesomeMarkers.icon({
 	icon: 'play',
 	markerColor: 'orange'
 });
 
+//Will represent the question point if the user gets the answer correct
 var markerGreen = L.AwesomeMarkers.icon({
 	icon: 'play',
 	markerColor: 'green'
 });
 
-var markerPurple = L.AwesomeMarkers.icon({
-	icon: 'play',
-	markerColor: 'purple'
-});
-
+//Will represent the question point if the user gets the answer incorrect
 var markerRed = L.AwesomeMarkers.icon({
 	icon: 'play',
 	markerColor: 'red'
 });
 
+//Will represent all question points that are close enough to be answered
+var markerPurple = L.AwesomeMarkers.icon({
+	icon: 'play',
+	markerColor: 'purple'
+});
+
+//Will represent all the question points when they are loaded and if they are not close enough to be answered
 var markerBlue = L.AwesomeMarkers.icon({
 	icon: 'play',
 	markerColor: 'cadetblue'
 });
 
+//Tracking location
+//adapted from: https://www.w3schools.com/html/html5_geolocation.asp
+//adapted from: https://gis.stackexchange.com/questions/182068/getting-current-user-location-automatically-every-x-seconds-to-put-on-leaflet
+var initialTracking = true;
+var userLocation;
+var autoPan = false;
+
 function trackLocation() {
 	if (!initialTracking){
-	// zoom to center
+	//Zoom to center
 		mymap.fitBounds(userLocation.getLatLng().toBounds(250));
 		autoPan = true;
-		
-		
+			
 	} else {
 		if (navigator.geolocation) {
 			alert("Finding your position!");
 			navigator.geolocation.watchPosition(showPosition);
 
-		//error handing	
+		//Error handling for if it cannot geolocate
 		} else {
 			alert("Geolocation is not supported by this browser.");
 		}
 	}
 }
 
+//Shows the potistion as an orange marker on the map
 function showPosition(position) {
 
 	if(!initialTracking){
