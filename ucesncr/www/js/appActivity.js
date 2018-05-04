@@ -159,7 +159,7 @@ function questionsToAnswer(){
 }
 
 function checkQuestions(markersArray){
-	
+
 	latlng = userLocation.getLatLng();
 	alert("Checking for nearby questions"); //works
 
@@ -171,7 +171,6 @@ function checkQuestions(markersArray){
 
 	    if (distance <= 20) {
             markersArray[i].setIcon(markerPurple);
-			
 			markersArray[i].on('click', onClick);
 
         } else {
@@ -227,7 +226,6 @@ function showClickedQuestion(clickedQuestion){
 	document.getElementById("check2").checked = false;
 	document.getElementById("check3").checked = false;
 	document.getElementById("check3").checked = false;
-
 }
 
 function validateAnswer(){
@@ -282,7 +280,6 @@ function answerResponse(answer, answerValue){
     }
 	if (correctAnswer == 3) {
 		correctAnswerValue = clickedQuestion.feature.properties.answer3;
-
 	}
 	if (correctAnswer == 4) {
 		correctAnswerValue = clickedQuestion.feature.properties.answer4;
@@ -293,7 +290,7 @@ function answerResponse(answer, answerValue){
 		answer_correct = true;
 		submitAnswer(answer, answerValue, answer_correct);
 	} else {
-		alert("That is the wrong answer.\n The correct answer is: " + correctAnswer + " - " + correctAnswerValue);
+		alert("That is the wrong answer.\nThe correct answer is: " + correctAnswer + " - " + correctAnswerValue);
 		answer_correct = false;
 		submitAnswer(answer, answerValue, answer_correct);
 	}
@@ -323,7 +320,7 @@ function processData(postString) {
 function dataUploaded() {
   // this function listens out for the server to say that the data is ready - i.e. has state 4
   if (client.readyState == 4) {
-    // change the DIV to show the response
+    // show an alert with the response text
     alert(client.responseText);
 
     document.getElementById('questionsection').style.display = 'none';
@@ -338,8 +335,3 @@ function dataUploaded() {
 
     }
 }
-
-
-
-
-
