@@ -154,7 +154,6 @@ function showPosition(position) {
 
 }
 
-
 function questionsToAnswer(){
 	checkQuestions(markers);
 }
@@ -177,11 +176,8 @@ function checkQuestions(markersArray){
 
         } else {
         	markersArray[i].setIcon(markerBlue);
-        	markersArray[i].bindPopup("This marker is too far away");
+        	markersArray[i].bindPopup("<b>Can't Answer!</b><br>This question is too far away.");
         }
-
-        
-
 	}
 }
 
@@ -206,7 +202,6 @@ function deg2rad(deg) {
   return deg * (Math.PI/180)
 }
 
-//this.feature.properties.question
 
 var clickedQuestion;
 
@@ -216,7 +211,6 @@ function onClick(e) {
 	clickedQuestion = this;
 
 }
-
 
 function showClickedQuestion(clickedQuestion){
 
@@ -235,7 +229,6 @@ function showClickedQuestion(clickedQuestion){
 	document.getElementById("check3").checked = false;
 
 }
-
 
 function validateAnswer(){
 
