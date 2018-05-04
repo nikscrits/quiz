@@ -142,6 +142,8 @@ function showPosition(position) {
 	// also include a pop-up that shows the place value of the earthquakes
 	layer_marker = L.marker(latlng, {icon:markerBlue});
 
+	layer_marker.bindPopup("<b>There's a question here!</b>");
+
 	markers.push(layer_marker);
 
 	return layer_marker;
