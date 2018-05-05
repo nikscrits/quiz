@@ -41,7 +41,7 @@ var markerBlue = L.AwesomeMarkers.icon({
 	markerColor: 'cadetblue'
 });
 
-//Tracking location
+//The following code tracks the user's location as they move
 //adapted from: https://www.w3schools.com/html/html5_geolocation.asp
 //adapted from: https://gis.stackexchange.com/questions/182068/getting-current-user-location-automatically-every-x-seconds-to-put-on-leaflet
 var initialTracking = true;
@@ -50,7 +50,7 @@ var autoPan = false;
 
 function trackLocation() {
 	if (!initialTracking){
-	//Zoom to center
+		//Zoom to center
 		mymap.fitBounds(userLocation.getLatLng().toBounds(250));
 		autoPan = true;
 			
@@ -66,7 +66,8 @@ function trackLocation() {
 	}
 }
 
-//Shows the potistion as an orange marker on the map
+
+//Shows the user's current position as an orange marker on the map and pans the map to that location
 function showPosition(position) {
 
 	if(!initialTracking){
@@ -75,7 +76,6 @@ function showPosition(position) {
 
 	userLocation = L.marker([position.coords.latitude,position.coords.longitude], {icon:markerOrange}).addTo(mymap);
 						
-	
 	if(initialTracking){
 		initialTracking = false;
 		mymap.fitBounds(userLocation.getLatLng().toBounds(250));
@@ -87,98 +87,109 @@ function showPosition(position) {
 }
 
 
-	// create a variable that will hold the XMLHttpRequest() - this must be done outside a function so that all the functions can use the same variable 
+//Create a variable that will hold the XMLHttpRequest()
+var client;
 	
-	var client2;
-	
-	// and a variable that will hold the layer itself – we need to do this outside the function so that we can use it to remove the layer later on
-	
-	var questionsLayer;
+//Create a variable that will hold the layer itself
+var questionsLayer;
 
-	// create the code to get the Earthquakes data using an XMLHttpRequest
-	function getQuestions() {
-	client2 = new XMLHttpRequest();
-	client2.open('GET','http://developer.cege.ucl.ac.uk:30288/getquestions');
-	client2.onreadystatechange = questionResponse; // note don't use earthquakeResponse() with brackets as that doesn't work
-	client2.send();
+//A function to get the questions from the database using an XMLHttpRequest
+function getQuestions() {
+
+	client = new XMLHttpRequest();
+	client.open('GET','http://developer.cege.ucl.ac.uk:30288/getquestions');
+	client.onreadystatechange = questionResponse;
+	client.send();
 }
 
-	// create the code to wait for the response from the data server, and process the response once it is received
-	markers = [];
+//A function that will to wait for the response from the data server, and process the response once it is received
+function questionResponse() {
 
-
-	function questionResponse() {
-
-	// this function listens out for the server to say that the data is ready - i.e. has state 4
-	
-	if (client2.readyState == 4) {
-	// once the data is ready, process the data
-	
-	var questionData = client2.responseText;
+	//This listens out for the server to say that the data is ready - i.e. has state 4
+	if (client.readyState == 4) {
+	//Once the data is ready, process the data by moving to the 'loadQuestionLayer' function
+	var questionData = client.responseText;
 	loadQuestionLayer(questionData);
-}
+	}
 }
 
-	// convert the received data - which is text - to JSON format and add it to the map
-	function loadQuestionLayer(questionData) {
+//Create an empty array that will hold all of the question markers once they are created
+markers = [];
+
+//A function to convert the received data - which is text - to JSON format and add it as a markerto the map
+function loadQuestionLayer(questionData) {
 	
-	// convert the text to JSON
-	// questionJSON is an array
+	//Convert the text to JSON
 	var questionJSON = JSON.parse(questionData);
-	
-	// load the geoJSON layer
+		
+	//Load the geoJSON layer
 	var questionsLayer = L.geoJson(questionJSON,
-{
-	// use point to layer to create the points
-	pointToLayer: function (feature, latlng)
-{
-	// look at the GeoJSON file - specifically at the properties - to see the earthquake magnitude and use a different marker depending on this value
-	// also include a pop-up that shows the place value of the earthquakes
-	layer_marker = L.marker(latlng, {icon:markerBlue});
+	{
+		//Use point to layer to create the points
+		pointToLayer: function (feature, latlng)
+	{
+		//Create a marker for each of the questions and set it to blue
+		//Add a pop-up stating that there is a question there
+		layer_marker = L.marker(latlng, {icon:markerBlue});	
 
-	layer_marker.bindPopup("<b>There's a question here!</b>");
+		layer_marker.bindPopup("<b>There's a question here!</b>");
 
-	markers.push(layer_marker);
+		//Add the marker to the 'markers' array
+		markers.push(layer_marker);
 
-	return layer_marker;
-
-},
-}).addTo(mymap);
+		return layer_marker;
+	},
+	}).addTo(mymap);
 	
-	// change the map zoom so that all the data is shown
+	//Change the map zoom so that all the question markers are shown
 	mymap.fitBounds(questionsLayer.getBounds());
 
 }
 
-function questionsToAnswer(){
-	checkQuestions(markers);
-}
+// !!!!!!!!!!!!!!!!!!! NOT NEEDED - MARKERS ARRAY IS A GLOBAL VARIABLE
+//A function to direct to the 'checkQuestions' function after clicking the 'Find Nearby Questions button'
+// function questionsToAnswer(){
+// 	//Send the markers array into the function
+// 	checkQuestions(markers);
+// }
 
-function checkQuestions(markersArray){
+//A function to check if each question point is within 20m of the user's current location
+function checkQuestions(){
 
-	latlng = userLocation.getLatLng();
-	alert("Checking for nearby questions"); //works
+	//Assign the latitude and longitude of the user's current location
+	var latlng = userLocation.getLatLng();
+	alert("Checking for nearby questions");
 
-	for(var i=0; i<markersArray.length; i++) {
-	    current_point = markersArray[i];
+	//Zoom into the user's current location
+	mymap.fitBounds(latlng.toBounds(500));
+
+	//Iterate around each of the markers and check if they are within 20m of the user's current location
+	for(var i=0; i<markers.length; i++) {
+
+		//Assign the latitude and longitude of the marker currently being checked
+	    current_point = markers[i];
 	    currentpoint_latlng = current_point.getLatLng();
 
-	    var distance = getDistanceFromLatLonInM(currentpoint_latlng.lat, currentpoint_latlng.lng, latlng.lat, latlng.lng);
+	    //Find the distance between the current question marker, and the user's current location using the 'getDistance' function
+	    //A distance between the markers in meters is returned
+	    var distance = getDistance(currentpoint_latlng.lat, currentpoint_latlng.lng, latlng.lat, latlng.lng);
 
+	    //If the distance is under 20m then make the marker purple and allow click events to be processed
 	    if (distance <= 20) {
-            markersArray[i].setIcon(markerPurple);
-			markersArray[i].on('click', onClick);
-
+            markers[i].setIcon(markerPurple);
+			markers[i].on('click', onClick);
         } else {
-        	markersArray[i].setIcon(markerBlue);
-        	markersArray[i].bindPopup("<b>Can't Answer!</b><br>This question is too far away.");
+        	//If the distance is over 20m then make the marker blue and show a pop up when the marker is clicked
+        	markers[i].setIcon(markerBlue);
+        	markers[i].bindPopup("<b>Can't Answer!</b><br>This question is too far away.");
         }
 	}
 }
 
-//Code from:
-//https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
-function getDistanceFromLatLonInM(lat1,lon1,lat2,lon2) {
+//Function to work out the distance between the latitudes and longitudes of two points
+//Code from: https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+function getDistance(lat1,lon1,lat2,lon2) {
+  
   var R = 6371; // Radius of the earth in km
   var dLat = deg2rad(lat2-lat1);  // deg2rad below
   var dLon = deg2rad(lon2-lon1); 
@@ -188,57 +199,69 @@ function getDistanceFromLatLonInM(lat1,lon1,lat2,lon2) {
     Math.sin(dLon/2) * Math.sin(dLon/2)
     ; 
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-  var d = R * c; // Distance in km
-  var d2 = d * 1000;
+  var d = R * c; //Distance in km
+  var d2 = d * 1000; //Distance in m
   return d2;
+
 }
 
 function deg2rad(deg) {
   return deg * (Math.PI/180)
 }
 
-
+//Create a variable for the marker that has been clicked
 var clickedQuestion;
 
 function onClick(e) {
 
+	//When a marker is clicked go to the 'showClickedQuestion' function
 	showClickedQuestion(this);
-	clickedQuestion = this;
 
+	//Assign the marker that has been cliked to the 'clickedQuestion' variable
+	clickedQuestion = this;
 }
 
+//A function to show the div that holds the question form where the user can submit their answer
 function showClickedQuestion(clickedQuestion){
 
+	//Hide the div that holds the leaflet map and show the div that holds the question form
 	document.getElementById('questionsection').style.display = 'block';
 	document.getElementById('mapid').style.display = 'none';
 
+	//Populate the textareas with the question data for the marker that has been clicked
 	document.getElementById("question").value = clickedQuestion.feature.properties.question;
 	document.getElementById("answer1").value = clickedQuestion.feature.properties.answer1;
 	document.getElementById("answer2").value = clickedQuestion.feature.properties.answer2;
 	document.getElementById("answer3").value = clickedQuestion.feature.properties.answer3;
 	document.getElementById("answer4").value = clickedQuestion.feature.properties.answer4;
 
+	//Make the radio buttons all unchecked for the user to make their choice
 	document.getElementById("check1").checked = false;
 	document.getElementById("check2").checked = false;
 	document.getElementById("check3").checked = false;
 	document.getElementById("check3").checked = false;
 }
 
+//A function to validate and process the answer given by the user
 function validateAnswer(){
 
-// now get the radio button values
+	//Get the radio button values and ensure an answer has been given
 	if ( (document.getElementById("check1").checked == false) &&
 		(document.getElementById("check2").checked == false) &&
 		(document.getElementById("check3").checked == false) &&
 		(document.getElementById("check4").checked == false)) {
 		
+		//If an answer hasn't been selected the user will be warned to give an answer
 		alert("Please select an answer");
 
 	} else {
 
+	//If an answer has been given
+	//Create two variables for the answer that has been given and its value
 	var givenAnswer;
 	var answerValue;
 
+	//Assign the created variables based upon the answer given by the user
 	if (document.getElementById("check1").checked) {
         givenAnswer = 1;
         answerValue = clickedQuestion.feature.properties.answer1;
@@ -257,17 +280,22 @@ function validateAnswer(){
 		answerValue = clickedQuestion.feature.properties.answer4;
 	}
 
-		answerResponse(givenAnswer, answerValue);
-	}
+	//Send the answer given and its value to the 'answerResponse' function
+	answerResponse(givenAnswer, answerValue);
 
+	}
 }
 
+//Create a variable to hold a boolean for whether the user gets the answer right or wrong
 var answer_correct;
+
 function answerResponse(answer, answerValue){
 
+	//Assign the correct answer from the clicked marker
 	var correctAnswer = clickedQuestion.feature.properties.correct_answer;
 	var correctAnswerValue;
 
+	//Assign the value of the answer depending on the number
 	if (correctAnswer == 1) {
         correctAnswerValue = clickedQuestion.feature.properties.answer1;
     }
@@ -281,53 +309,74 @@ function answerResponse(answer, answerValue){
 		correctAnswerValue = clickedQuestion.feature.properties.answer4;
 	}
 
+	//If the answer the user gives is the same as the correct answer
 	if (answer == correctAnswer) {
+
+		//Alert them that they have got the answer correct
 		alert("That is the correct answer: " + correctAnswer + "\nWell done!");
+		//Make variable true
 		answer_correct = true;
+		//Submit the answer by sending it to the 'submitAnswer' function
 		submitAnswer(answer, answerValue, answer_correct);
+
 	} else {
+		//If the answer the user gives is incorrect
+		//Alert them that they have got the answer wrong
 		alert("That is the wrong answer.\nThe correct answer is: " + correctAnswer + " - " + correctAnswerValue);
+		//Make variable false
 		answer_correct = false;
+		//Submit the answer by sending it to the 'submitAnswer' function
 		submitAnswer(answer, answerValue, answer_correct);
 	}
 }
 
+//A function to create a string with all the question and answer details to send to the database
 function submitAnswer(answer, answer_value, answer_correct){
 
 	var question = clickedQuestion.feature.properties.question;
-
+	//Create and assign a varibale with all of the details about the clicked marker, the answer given by the user, and if they were correct
 	var postString = "&question="+question +"&answer="+answer +"&answer_value="+answer_value+"&answer_correct="+answer_correct;
-
 	processData(postString);
 }
 
+//Create a variable that will hold the XMLHttpRequest()
+var client2;
 
-var client;
-
+//A function that will send the data to the database using an XMLHttpRequest
 function processData(postString) {
-   client = new XMLHttpRequest();
-   client.open('POST','http://developer.cege.ucl.ac.uk:30288/uploadAnswerData',true);
-   client.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-   client.onreadystatechange = dataUploaded;  
-   client.send(postString);
+
+   client2 = new XMLHttpRequest();
+   client2.open('POST','http://developer.cege.ucl.ac.uk:30288/uploadAnswerData',true);
+   client2.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+   client2.onreadystatechange = dataUploaded;  
+   client2.send(postString);
 }
 
-// create the code to wait for the response from the data server, and process the response once it is received
+//A function to wait for the response from the data server, and process the response once it is received
 function dataUploaded() {
-  // this function listens out for the server to say that the data is ready - i.e. has state 4
-  if (client.readyState == 4) {
-    // show an alert with the response text
-    alert(client.responseText);
+	//Listens out for the server to say that the data is ready - i.e. has state 4
+  	if (client2.readyState == 4) {
 
-    document.getElementById('questionsection').style.display = 'none';
-	document.getElementById('mapid').style.display = 'block';
-	
+    	//Show an alert with the response text
+    	alert(client2.responseText);
 
-	if (answer_correct) {
-		clickedQuestion.setIcon(markerGreen);
-	} else {
-		clickedQuestion.setIcon(markerRed);
-	}
+    	//Go to the 'returnToMap' function to show the div holding the map again
+		returnToMap();
 
+		//Change the colour of the question marker depending on if they were right or wrong
+		if (answer_correct) {
+			//If they were correct = green
+			clickedQuestion.setIcon(markerGreen);
+		} else {
+			//If they were wrong = red
+			clickedQuestion.setIcon(markerRed);
+		}
     }
+}
+
+//A function to return the map to its first state 
+//This is with the div that holds map showing, and the div that holds the question form hidden
+function returnToMap(){
+	document.getElementById('questionsection').style.display = 'none';
+	document.getElementById('mapid').style.display = 'block';
 }

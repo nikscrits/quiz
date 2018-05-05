@@ -214,7 +214,11 @@ _:-ms-input-placeholder, :root .demo-graph {
           align-items: center;
 }
 
-.textarea {
-  border: none;
-  font-family: 'Roboto', 'Helvetica', sans-serif;
+#question { 
+    border: none; 
+    width:100%;
+    font-family: 'Roboto', 'Helvetica', sans-serif;
+    font-weight: bold;
 }
+
+
