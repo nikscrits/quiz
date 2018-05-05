@@ -1,4 +1,4 @@
-# Location Based Quiz App
+# Location Based Quiz - User Interface App
 
 This repository contains the code used to create a phonegap app that is the user interface for a location based quiz. This app aims to:
 

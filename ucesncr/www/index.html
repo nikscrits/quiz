@@ -87,7 +87,7 @@ crossorigin=""></script>
         <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
           <a class="mdl-navigation__link" href=""onclick='trackLocation();return false;'><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">add_location</i>1 Track Location</a>
           <a class="mdl-navigation__link" href=""onclick='getQuestions();return false;'><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">star</i> 2 Get Questions</a>
-          <a class="mdl-navigation__link" href=""onclick='questionsToAnswer();return false;'><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">check</i>3 Find Nearby Questions</a>
+          <a class="mdl-navigation__link" href=""onclick='checkQuestions();return false;'><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">check</i>3 Find Nearby Questions</a>
         </nav>
       </div>
 	  
@@ -99,7 +99,7 @@ crossorigin=""></script>
     <div id="questionsection" style ="display:none">
         <h2 id = "header">Answer the question!</h1>
 
-        <textarea id = "question" style="border: none; width:100%" readonly></textarea>
+        <textarea id = "question" readonly></textarea>
 
         <textarea id = "answer1" style="border: none" readonly></textarea>
         <input type="radio" name="answer" id = check1 value="1"/><br />
@@ -114,6 +114,8 @@ crossorigin=""></script>
         <input type="radio" name="answer" id = check4 value="4"/><br />
 
         <button class="mdl-button mdl-button--raised mdl-button--colored" id="submitAnswer" onclick="validateAnswer()">Submit Answer</button>
+        <button class="mdl-button mdl-button--raised mdl-button--colored" id="goBack" onclick="returnToMap()">Go Back</button>
+
 
     </div>
 
