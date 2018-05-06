@@ -1,8 +1,8 @@
 {
   "background_color": "#FFF",
   "display": "standalone",
-  "name": "Location Quiz App",
-  "short_name": "Location Quiz App",
+  "name": "Location Quiz",
+  "short_name": "Location Quiz",
   "version": "quizapp",
   "description": "Hello World sample application that responds to the deviceready event.",
   "author": "PhoneGap Team",
