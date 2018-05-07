@@ -46,6 +46,7 @@ var markerBlue = L.AwesomeMarkers.icon({
 //adapted from: https://gis.stackexchange.com/questions/182068/getting-current-user-location-automatically-every-x-seconds-to-put-on-leaflet
 var initialTracking = true;
 var userLocation;
+var userLocationRad;
 var autoPan = false;
 
 function trackLocation() {
@@ -66,16 +67,26 @@ function trackLocation() {
 	}
 }
 
-
 //Shows the user's current position as an orange marker on the map and pans the map to that location
 function showPosition(position) {
 
 	if(!initialTracking){
 		mymap.removeLayer(userLocation);
+		mymap.removeLayer(userLocationRad);
 	}
 
+	//Adds a circle around the marker to show the radius where questions can be answered (20m) 
+	var setRad = 20; 
+
+	userLocationRad = L.circle([position.coords.latitude,position.coords.longitude], {
+		color: 'orange',
+		fillColor: '#FFD36E',
+    	fillOpacity: 0.5,
+    	radius: setRad
+		}).addTo(mymap);
+
 	userLocation = L.marker([position.coords.latitude,position.coords.longitude], {icon:markerOrange}).addTo(mymap);
-						
+	
 	if(initialTracking){
 		initialTracking = false;
 		mymap.fitBounds(userLocation.getLatLng().toBounds(250));
@@ -146,13 +157,6 @@ function loadQuestionLayer(questionData) {
 
 }
 
-// !!!!!!!!!!!!!!!!!!! NOT NEEDED - MARKERS ARRAY IS A GLOBAL VARIABLE
-//A function to direct to the 'checkQuestions' function after clicking the 'Find Nearby Questions button'
-// function questionsToAnswer(){
-// 	//Send the markers array into the function
-// 	checkQuestions(markers);
-// }
-
 //A function to check if each question point is within 20m of the user's current location
 function checkQuestions(){
 
@@ -178,6 +182,7 @@ function checkQuestions(){
 	    if (distance <= 20) {
             markers[i].setIcon(markerPurple);
 			markers[i].on('click', onClick);
+
         } else {
         	//If the distance is over 20m then make the marker blue and show a pop up when the marker is clicked
         	markers[i].setIcon(markerBlue);
