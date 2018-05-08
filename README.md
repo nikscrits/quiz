@@ -11,4 +11,4 @@ This repository contains the code used to create a phonegap app that is the user
 
 It can be downloaded to an android phone using [this link](https://build.phonegap.com/apps/3152351/builds) and the user help guide can be found as a html page [here](https://rawgit.com/nikscrits/quiz/master/userguide/Quiz%20User%20Guide.html). In order for this application to function succesfully, the [httpServer.js](https://github.com/nikscrits/server) needs to be running.
 
-<img src="https://github.com/nikscrits/server/blob/master/screenshots/mobapp.png" width="500">
+<p align="center"><img src="https://github.com/nikscrits/server/blob/master/screenshots/mobapp.png" width="500"></p>
