@@ -9,6 +9,8 @@ This repository contains the code used to create a phonegap app that is the user
 * Inform the user whether they got the question correct.
 * Send the answers to a database.
 
-It can be downloaded to an android phone using [this link](https://build.phonegap.com/apps/3152351/builds) and the user help guide can be found as a html page [here](https://rawgit.com/nikscrits/quiz/master/userguide/Quiz%20User%20Guide.html). In order for this application to function succesfully, the [httpServer.js](https://github.com/nikscrits/server) needs to be running.
+It can be downloaded on a suitable android device using the QR code found [here](https://github.com/nikscrits/server/blob/master/screenshots/QRcode.png) or via the phonegap website using [this link](https://build.phonegap.com/apps/3152351/builds). The user help guide can be found as a html page [here](https://rawgit.com/nikscrits/quiz/master/userguide/Quiz%20User%20Guide.html). In order for this application to function succesfully, the [httpServer.js](https://github.com/nikscrits/server) needs to be running.
 
-<p align="center"><img src="https://github.com/nikscrits/server/blob/master/screenshots/mobapp.png" width="500"></p>
+> For a more technical review of this application see the [server repository](https://github.com/nikscrits/server).
+
+<p align="center"><img src="https://github.com/nikscrits/server/blob/master/screenshots/mobapp.png" width="600"></p>
